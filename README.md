@@ -80,6 +80,20 @@ El sitio está configurado para obtener contenido de WordPress a través de Grap
 2. Actualiza la URL de GraphQL en `gatsby-config.js`.
 3. Personaliza las consultas GraphQL según la estructura de tu contenido.
 
+### Datos de prueba mientras el sitio WordPress no está disponible
+
+Actualmente, el sitio está configurado para usar datos de prueba (mock data) mientras el sitio WordPress no está disponible. Consulta el archivo `MOCK-DATA-SOLUTION.md` para obtener más información sobre cómo funciona esta solución y cómo cambiar a datos reales cuando el sitio WordPress esté listo.
+
+### Solución a problemas de redirección de WordPress
+
+Si experimentas problemas de redirección con WordPress durante la construcción de Gatsby, consulta el archivo `WORDPRESS-REDIRECT-FIX.md` para obtener instrucciones detalladas sobre cómo solucionarlo.
+
+En resumen, las soluciones incluyen:
+
+1. Instalar el plugin de WordPress incluido en `wordpress-plugins/prevent-redirect-graphql`
+2. Añadir código personalizado al archivo `functions.php` de tu tema de WordPress
+3. Utilizar el plugin de Gatsby personalizado que ya está configurado en este proyecto
+
 ## 📝 Tareas pendientes
 
 - [ ] Reemplazar todas las imágenes de placeholder

@@ -1,0 +1,8 @@
+{
+  "name": "gatsby-source-mock-wordpress",
+  "version": "1.0.0",
+  "description": "Mock WordPress data source for Gatsby",
+  "main": "index.js",
+  "author": "Your Name",
+  "license": "MIT"
+}
