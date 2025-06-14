@@ -1,0 +1,153 @@
+{
+  "monthlyGoals": {
+    "articlesGoal": 4,
+    "readersGoal": 500,
+    "consultationsGoal": 15
+  },
+  "currentProgress": {
+    "articlesPublished": 3,
+    "monthlyReaders": 342,
+    "consultationsGenerated": 8,
+    "lastUpdated": "2024-01-25T10:30:00.000Z"
+  },
+  "achievements": [
+    {
+      "name": "Primer Artículo Publicado",
+      "description": "¡Felicidades! Has publicado tu primer artículo profesional",
+      "dateAchieved": "2024-01-15T10:00:00.000Z",
+      "icon": "🎉"
+    },
+    {
+      "name": "100 Lectores Alcanzados",
+      "description": "Tu contenido ha llegado a más de 100 personas",
+      "dateAchieved": "2024-01-18T14:20:00.000Z",
+      "icon": "👥"
+    },
+    {
+      "name": "Primera Consulta Generada",
+      "description": "Tu contenido ha generado la primera consulta profesional",
+      "dateAchieved": "2024-01-20T09:15:00.000Z",
+      "icon": "💼"
+    }
+  ],
+  "weeklyStats": {
+    "articlesViews": [
+      {
+        "title": "Cómo manejar la ansiedad en tiempos de incertidumbre",
+        "views": 156,
+        "engagement": 85,
+        "avgReadTime": "7:32"
+      },
+      {
+        "title": "Construyendo una autoestima saludable: Guía práctica",
+        "views": 98,
+        "engagement": 92,
+        "avgReadTime": "9:15"
+      },
+      {
+        "title": "Mindfulness para principiantes: Tu primer paso hacia el bienestar",
+        "views": 88,
+        "engagement": 78,
+        "avgReadTime": "11:20"
+      }
+    ],
+    "topKeywords": [
+      { "keyword": "ansiedad", "searches": 45 },
+      { "keyword": "autoestima", "searches": 32 },
+      { "keyword": "mindfulness", "searches": 28 },
+      { "keyword": "terapia online", "searches": 24 },
+      { "keyword": "psicólogo Madrid", "searches": 19 }
+    ],
+    "trafficSources": {
+      "organic": 65,
+      "direct": 20,
+      "social": 10,
+      "referral": 5
+    }
+  },
+  "quickActions": [
+    {
+      "title": "📝 Escribir nuevo artículo",
+      "description": "Crea contenido que ayude a más personas",
+      "action": "/admin/#/collections/blog/new",
+      "priority": "high"
+    },
+    {
+      "title": "📸 Actualizar foto de perfil",
+      "description": "Mantén tu imagen profesional actualizada",
+      "action": "/admin/#/collections/pages/entries/about",
+      "priority": "medium"
+    },
+    {
+      "title": "📅 Revisar horarios",
+      "description": "Actualiza tu disponibilidad",
+      "action": "/admin/#/collections/settings/entries/contact",
+      "priority": "low"
+    },
+    {
+      "title": "💬 Gestionar testimonios",
+      "description": "Revisa y modera nuevos testimonios",
+      "action": "/admin/#/collections/data/entries/testimonials",
+      "priority": "medium"
+    }
+  ],
+  "recentActivity": [
+    {
+      "type": "article_published",
+      "title": "Artículo 'Mindfulness para principiantes' publicado",
+      "timestamp": "2024-01-25T09:15:00.000Z",
+      "icon": "✅"
+    },
+    {
+      "type": "engagement",
+      "title": "45 personas leyeron tu último artículo",
+      "timestamp": "2024-01-24T16:30:00.000Z",
+      "icon": "👁️"
+    },
+    {
+      "type": "contact",
+      "title": "Nuevo mensaje de contacto recibido",
+      "timestamp": "2024-01-24T11:20:00.000Z",
+      "icon": "💌"
+    },
+    {
+      "type": "milestone",
+      "title": "¡Has alcanzado 300 lectores este mes!",
+      "timestamp": "2024-01-23T14:45:00.000Z",
+      "icon": "🎯"
+    }
+  ],
+  "insights": {
+    "bestPublishingTime": "Martes a las 10:00 AM",
+    "mostEngagingCategory": "Autoestima",
+    "averageReadingTime": "8:45",
+    "returnVisitorRate": 34,
+    "recommendations": [
+      "📈 Los artículos sobre ansiedad tienen 3x más engagement",
+      "💡 Publicar los martes a las 10am genera más visitas",
+      "🎯 Tus lectores buscan más contenido sobre relaciones",
+      "📱 El 68% de tus lectores acceden desde móvil",
+      "⭐ Los artículos con ejercicios prácticos son más compartidos"
+    ]
+  },
+  "nextSteps": [
+    {
+      "task": "Escribir artículo sobre relaciones de pareja",
+      "reason": "Alta demanda según búsquedas",
+      "priority": "high",
+      "estimatedImpact": "Alto"
+    },
+    {
+      "task": "Optimizar sitio para móvil",
+      "reason": "68% de lectores usan dispositivos móviles",
+      "priority": "medium",
+      "estimatedImpact": "Medio"
+    },
+    {
+      "task": "Crear serie de ejercicios prácticos",
+      "reason": "Contenido más compartido",
+      "priority": "medium",
+      "estimatedImpact": "Alto"
+    }
+  ]
+}

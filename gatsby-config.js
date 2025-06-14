@@ -1,7 +1,6 @@
 /**
- * Configure your Gatsby site with this file.
- *
- * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-config/
+ * 🧠 CONFIGURACIÓN GATSBY - PSICOLOGÍA PROFESIONAL
+ * Sistema CMS nativo sin dependencias externas
  */
 
 // Load environment variables
@@ -9,60 +8,66 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
-// Determine whether to use mock data or real WordPress data
-const useMockData = process.env.USE_MOCK_DATA === 'true';
-
 /**
  * @type {import('gatsby').GatsbyConfig}
  */
 module.exports = {
   siteMetadata: {
-    title: `Dr. [Nombre del Psicólogo]`,
-    description: `Psicólogo Sanitario especializado en [especialidad]. Artículos profesionales y recursos de bienestar mental.`,
-    siteUrl: `https://www.tusitio.netlify.app/`,
+    title: `Consulta de Psicología Profesional`,
+    description: `Psicólogo Sanitario especializado en bienestar mental. Artículos profesionales, recursos y acompañamiento terapéutico personalizado.`,
+    siteUrl: `https://psychology-pro.netlify.app/`,
+    author: {
+      name: `Dr. [Nombre del Psicólogo]`,
+      summary: `Psicólogo Sanitario con más de [X] años de experiencia ayudando a personas a encontrar su bienestar mental.`,
+      email: `contacto@psychology-pro.com`,
+      phone: `+34 600 123 456`,
+      location: `Madrid, España`,
+    },
     social: {
-      twitter: `@tuusuario`,
-      instagram: `@tuusuario`,
+      twitter: `@psychology_pro`,
+      instagram: `@psychology_pro`,
+      linkedin: `psychology-profesional`,
+      facebook: `psychology.profesional`,
+    },
+    services: {
+      individual: true,
+      couple: true,
+      family: true,
+      online: true,
     },
   },
   plugins: [
-    // Determine which data source to use based on environment variable
-    ...(useMockData
-      ? [
-          // Use mock WordPress data
-          `gatsby-source-mock-wordpress`,
-        ]
-      : [
-          // Use real WordPress data with redirect prevention
-          `gatsby-wordpress-no-redirect`,
-          {
-            resolve: `gatsby-source-wordpress`,
-            options: {
-              url: `https://psicologiacontenidos.wordpress.com/graphql`, // Ajusta a tu URL
-              schema: {
-                timeout: 60000,
-              },
-              // Add custom headers to prevent redirects
-              headers: {
-                'X-GRAPHQL-REQUEST': 'true',
-              },
-              // Increase timeout for requests
-              fetchOptions: {
-                timeout: 60000,
-              },
-            },
-          },
-        ]),
-
-    // Common plugins for both modes
     `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
+    `gatsby-transformer-remark`,
+    `gatsby-transformer-json`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/content/blog`,
+        path: `${__dirname}/content/blog/posts`,
         name: `blog`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/pages`,
+        name: `pages`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/settings`,
+        name: `settings`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/content/data`,
+        name: `data`,
       },
     },
     {
@@ -72,6 +77,86 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-    // Otros plugins...
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 630,
+            },
+          },
+          {
+            resolve: `gatsby-remark-responsive-iframe`,
+            options: {
+              wrapperStyle: `margin-bottom: 1.0725rem`,
+            },
+          },
+          `gatsby-remark-prismjs`,
+        ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                description
+                siteUrl
+                site_url: siteUrl
+              }
+            }
+          }
+        `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) => {
+              return allMarkdownRemark.nodes.map(node => {
+                return Object.assign({}, node.frontmatter, {
+                  description: node.excerpt,
+                  date: node.frontmatter.date,
+                  url: site.siteMetadata.siteUrl + node.fields.slug,
+                  guid: site.siteMetadata.siteUrl + node.fields.slug,
+                  custom_elements: [{ "content:encoded": node.html }],
+                })
+              })
+            },
+            query: `{
+              allMarkdownRemark(sort: {frontmatter: {date: DESC}}) {
+                nodes {
+                  excerpt
+                  html
+                  fields {
+                    slug
+                  }
+                  frontmatter {
+                    title
+                    date
+                  }
+                }
+              }
+            }`,
+            output: "/rss.xml",
+            title: "RSS Feed",
+          },
+        ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Dr. [Nombre del Psicólogo]`,
+        short_name: `Psicólogo`,
+        start_url: `/`,
+        background_color: `#ffffff`,
+        theme_color: `#663399`,
+        display: `minimal-ui`,
+        icon: `src/images/gatsby-icon.png`,
+      },
+    },
   ],
 }

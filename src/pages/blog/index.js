@@ -5,7 +5,7 @@ import Seo from "../../components/seo"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 const BlogIndex = ({ data, location }) => {
-  const posts = data.allWpPost.nodes
+  const posts = data.allMarkdownRemark.nodes
   const siteTitle = data.site.siteMetadata?.title || "Dr. Psicólogo"
 
   return (
@@ -25,8 +25,8 @@ const BlogIndex = ({ data, location }) => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map(post => {
-              const image = post.featuredImage?.node?.localFile &&
-                getImage(post.featuredImage.node.localFile)
+              const image = post.frontmatter.featuredImage &&
+                getImage(post.frontmatter.featuredImage)
 
               return (
                 <article key={post.id} className="card group h-full flex flex-col transition-all duration-300 hover:-translate-y-1">
@@ -34,7 +34,7 @@ const BlogIndex = ({ data, location }) => {
                     {image ? (
                       <GatsbyImage
                         image={image}
-                        alt={post.title}
+                        alt={post.frontmatter.title}
                         className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
@@ -47,33 +47,32 @@ const BlogIndex = ({ data, location }) => {
 
                     {/* Date badge */}
                     <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-primary-700 text-sm font-medium py-1 px-3 rounded-full shadow-sm">
-                      {post.date}
+                      {post.frontmatter.date}
                     </div>
                   </div>
 
                   <div className="p-6 flex-grow flex flex-col">
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {post.categories.nodes.map(category => (
-                        <span key={category.name} className="text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded-full">
-                          {category.name}
+                      {post.frontmatter.categories && post.frontmatter.categories.map(category => (
+                        <span key={category} className="text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded-full">
+                          {category}
                         </span>
                       ))}
                     </div>
 
                     <h2 className="text-xl font-bold mb-3 text-primary-800 group-hover:text-primary-600 transition-colors">
-                      <Link to={`/blog/${post.slug}`} className="hover:no-underline">
-                        {post.title}
+                      <Link to={`/blog${post.fields.slug}`} className="hover:no-underline">
+                        {post.frontmatter.title}
                       </Link>
                     </h2>
 
-                    <div
-                      className="text-neutral-600 mb-4 line-clamp-3"
-                      dangerouslySetInnerHTML={{ __html: post.excerpt }}
-                    />
+                    <p className="text-neutral-600 mb-4 line-clamp-3">
+                      {post.frontmatter.description || post.excerpt}
+                    </p>
 
                     <div className="mt-auto pt-4">
                       <Link
-                        to={`/blog/${post.slug}`}
+                        to={`/blog${post.fields.slug}`}
                         className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700 transition-colors"
                       >
                         Leer más
@@ -113,25 +112,30 @@ export const pageQuery = graphql`
         title
       }
     }
-    allWpPost(sort: {date: DESC}) {
+    allMarkdownRemark(
+      sort: { frontmatter: { date: DESC } }
+      filter: { fileAbsolutePath: { regex: "/content/blog/posts/" } }
+    ) {
       nodes {
         id
-        title
-        excerpt
-        slug
-        date(formatString: "DD MMMM, YYYY")
-        featuredImage {
-          node {
-            localFile {
-              childImageSharp {
-                gatsbyImageData(width: 600, aspectRatio: 1.5, formats: [AUTO, WEBP])
-              }
-            }
-          }
+        excerpt(pruneLength: 160)
+        fields {
+          slug
         }
-        categories {
-          nodes {
-            name
+        frontmatter {
+          title
+          date(formatString: "DD MMMM, YYYY")
+          description
+          categories
+          featuredImage {
+            childImageSharp {
+              gatsbyImageData(
+                width: 600
+                aspectRatio: 1.5
+                formats: [AUTO, WEBP]
+                placeholder: BLURRED
+              )
+            }
           }
         }
       }

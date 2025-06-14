@@ -1,0 +1,50 @@
+{
+  "platforms": [
+    {
+      "name": "Twitter",
+      "url": "https://twitter.com/tuusuario",
+      "username": "@tuusuario",
+      "description": "Reflexiones sobre psicología",
+      "active": true,
+      "icon": "twitter"
+    },
+    {
+      "name": "Instagram",
+      "url": "https://instagram.com/tuusuario",
+      "username": "@tuusuario",
+      "description": "Contenido visual y consejos",
+      "active": true,
+      "icon": "instagram"
+    },
+    {
+      "name": "LinkedIn",
+      "url": "https://linkedin.com/in/tuusuario",
+      "username": "tuusuario",
+      "description": "Perfil profesional",
+      "active": true,
+      "icon": "linkedin"
+    },
+    {
+      "name": "YouTube",
+      "url": "https://youtube.com/c/tucanal",
+      "username": "tucanal",
+      "description": "Videos educativos",
+      "active": true,
+      "icon": "youtube"
+    },
+    {
+      "name": "TikTok",
+      "url": "https://tiktok.com/@tuusuario",
+      "username": "@tuusuario",
+      "description": "Consejos rápidos",
+      "active": false,
+      "icon": "tiktok"
+    }
+  ],
+  "settings": {
+    "showInHeader": true,
+    "showInFooter": true,
+    "openInNewTab": true,
+    "displayStyle": "icons"
+  }
+}

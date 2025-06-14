@@ -1,0 +1,124 @@
+{
+  "title": "Consulta de Psicología Profesional",
+  "description": "Psicólogo Sanitario especializado en bienestar mental. Acompañamiento terapéutico personalizado con enfoque humanista y técnicas basadas en evidencia científica.",
+  "siteUrl": "https://psychology-pro.netlify.app/",
+  "logo": "/img/logo-psychology.png",
+  "colorScheme": "serenity",
+  "author": {
+    "name": "Dr. [Tu Nombre Completo]",
+    "title": "Psicólogo Sanitario Colegiado",
+    "collegeNumber": "M-12345",
+    "specialization": "Psicología Clínica y de la Salud",
+    "experience": "8 años",
+    "bio": "Psicólogo sanitario colegiado con más de 8 años de experiencia ayudando a personas a encontrar su bienestar mental y emocional. Me especializo en el tratamiento de ansiedad, depresión, autoestima y crecimiento personal utilizando un enfoque integrador que combina terapia cognitivo-conductual, mindfulness y técnicas humanistas.",
+    "image": "/img/profile-professional.jpg",
+    "philosophy": "Creo firmemente que cada persona tiene la capacidad innata de sanar y crecer. Mi rol es acompañarte en ese proceso, proporcionando un espacio seguro y las herramientas necesarias para que puedas desarrollar tu máximo potencial.",
+    "uniqueValue": [
+      "Enfoque personalizado adaptado a tus necesidades específicas",
+      "Combinación de técnicas tradicionales y modernas basadas en evidencia",
+      "Ambiente cálido y sin juicios donde puedes ser completamente auténtico",
+      "Flexibilidad en modalidades: presencial y online",
+      "Seguimiento continuo y ajuste del tratamiento según tu progreso"
+    ]
+  },
+  "contact": {
+    "phone": "+34 600 123 456",
+    "email": "contacto@psychology-pro.com",
+    "address": {
+      "street": "Calle de la Salud Mental, 123",
+      "city": "Madrid",
+      "postalCode": "28001",
+      "country": "España"
+    },
+    "mapsUrl": "https://maps.google.com/...",
+    "hours": {
+      "weekdays": "9:00 - 20:00",
+      "saturday": "10:00 - 14:00",
+      "sunday": "Cerrado"
+    },
+    "consultationModes": ["presencial", "online", "telefono"],
+    "responseTime": "24h"
+  },
+  "services": [
+    {
+      "name": "Primera Consulta",
+      "icon": "🏥",
+      "description": "Evaluación inicial completa donde conoceremos tu situación y estableceremos objetivos terapéuticos personalizados",
+      "price": 60,
+      "duration": 60,
+      "modality": ["presencial", "online"],
+      "active": true,
+      "featured": true
+    },
+    {
+      "name": "Terapia Individual",
+      "icon": "👤",
+      "description": "Sesiones personalizadas para trabajar ansiedad, depresión, autoestima y crecimiento personal",
+      "price": 50,
+      "duration": 50,
+      "modality": ["presencial", "online"],
+      "active": true,
+      "featured": true
+    },
+    {
+      "name": "Terapia de Pareja",
+      "icon": "💕",
+      "description": "Mejora la comunicación, resuelve conflictos y fortalece la relación de pareja",
+      "price": 65,
+      "duration": 60,
+      "modality": ["presencial", "online"],
+      "active": true,
+      "featured": false
+    },
+    {
+      "name": "Terapia Online",
+      "icon": "💻",
+      "description": "Sesiones por videollamada con la misma calidad que la terapia presencial",
+      "price": 45,
+      "duration": 50,
+      "modality": ["online"],
+      "active": true,
+      "featured": true
+    }
+  ],
+  "seo": {
+    "keywords": [
+      "psicólogo Madrid",
+      "terapia psicológica",
+      "salud mental",
+      "bienestar emocional",
+      "ansiedad",
+      "depresión",
+      "autoestima",
+      "terapia online",
+      "mindfulness",
+      "crecimiento personal"
+    ],
+    "defaultImage": "/img/psychology-social-card.jpg"
+  },
+  "features": {
+    "onlineTherapy": true,
+    "inPersonTherapy": true,
+    "emergencySupport": false,
+    "groupTherapy": true,
+    "workshopsAvailable": true,
+    "insuranceAccepted": ["Sanitas", "Adeslas", "DKV", "Mapfre"],
+    "languages": ["Español", "Inglés"],
+    "paymentMethods": ["Efectivo", "Tarjeta", "Transferencia", "Bizum"]
+  },
+  "certifications": {
+    "collegeNumber": "M-12345",
+    "mainDegree": "Licenciado en Psicología",
+    "specializations": [
+      "Psicología Clínica y de la Salud",
+      "Terapia Cognitivo-Conductual",
+      "Mindfulness y Terapias de Tercera Generación",
+      "Terapia de Pareja y Familia"
+    ],
+    "continuousEducation": [
+      "Máster en Psicología Clínica - Universidad Complutense",
+      "Especialización en Mindfulness - Instituto Mindfulness",
+      "Formación en Terapia de Pareja - Instituto Sistémico"
+    ]
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "contactInfo": {
+    "phone": {
+      "number": "+34 XXX XXX XXX",
+      "display": "XXX XXX XXX",
+      "whatsapp": true,
+      "available": "Lunes a Viernes, 9:00 - 18:00"
+    },
+    "email": {
+      "primary": "contacto@tusitio.com",
+      "appointments": "citas@tusitio.com",
+      "emergency": "urgencias@tusitio.com"
+    },
+    "address": {
+      "street": "[Calle y número]",
+      "city": "[Ciudad]",
+      "postalCode": "[Código postal]",
+      "province": "[Provincia]",
+      "country": "España",
+      "coordinates": {
+        "lat": 40.4168,
+        "lng": -3.7038
+      }
+    }
+  },
+  "officeHours": {
+    "monday": {
+      "open": "09:00",
+      "close": "18:00",
+      "available": true
+    },
+    "tuesday": {
+      "open": "09:00",
+      "close": "18:00",
+      "available": true
+    },
+    "wednesday": {
+      "open": "09:00",
+      "close": "18:00",
+      "available": true
+    },
+    "thursday": {
+      "open": "09:00",
+      "close": "18:00",
+      "available": true
+    },
+    "friday": {
+      "open": "09:00",
+      "close": "15:00",
+      "available": true
+    },
+    "saturday": {
+      "available": false
+    },
+    "sunday": {
+      "available": false
+    }
+  },
+  "appointmentTypes": [
+    {
+      "type": "presencial",
+      "name": "Consulta Presencial",
+      "duration": 50,
+      "price": "[precio]",
+      "available": true
+    },
+    {
+      "type": "online",
+      "name": "Consulta Online",
+      "duration": 50,
+      "price": "[precio]",
+      "available": true
+    },
+    {
+      "type": "pareja",
+      "name": "Terapia de Pareja",
+      "duration": 60,
+      "price": "[precio]",
+      "available": true
+    }
+  ],
+  "emergencyContact": {
+    "available": true,
+    "phone": "+34 XXX XXX XXX",
+    "hours": "24/7 para emergencias",
+    "note": "Solo para situaciones de crisis. Para citas regulares, usar el formulario de contacto."
+  },
+  "formSettings": {
+    "enableCaptcha": true,
+    "requiredFields": ["name", "email", "message"],
+    "autoReply": {
+      "enabled": true,
+      "subject": "Hemos recibido tu mensaje",
+      "message": "Gracias por contactarme. Te responderé en un plazo máximo de 24 horas."
+    }
+  }
+}

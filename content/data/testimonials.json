@@ -1,0 +1,82 @@
+{
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "María G.",
+      "age": 32,
+      "location": "Madrid",
+      "rating": 5,
+      "date": "2024-01-15",
+      "treatment": "Terapia para ansiedad",
+      "testimonial": "Después de meses luchando con la ansiedad, encontré en [Nombre] el apoyo que necesitaba. Su enfoque profesional y empático me ayudó a desarrollar herramientas para manejar mis síntomas. Recomiendo totalmente sus servicios.",
+      "featured": true,
+      "verified": true
+    },
+    {
+      "id": 2,
+      "name": "Carlos M.",
+      "age": 28,
+      "location": "Barcelona",
+      "rating": 5,
+      "date": "2024-01-10",
+      "treatment": "Terapia de pareja",
+      "testimonial": "Mi pareja y yo estábamos pasando por un momento muy difícil. Las sesiones nos ayudaron a comunicarnos mejor y a entender nuestras diferencias. Ahora tenemos una relación más sólida.",
+      "featured": true,
+      "verified": true
+    },
+    {
+      "id": 3,
+      "name": "Ana L.",
+      "age": 45,
+      "location": "Valencia",
+      "rating": 5,
+      "date": "2024-01-05",
+      "treatment": "Terapia para depresión",
+      "testimonial": "Atravesé una época muy oscura después de una pérdida importante. [Nombre] me acompañó en todo el proceso de duelo con mucha paciencia y profesionalidad. Me siento mucho mejor ahora.",
+      "featured": false,
+      "verified": true
+    },
+    {
+      "id": 4,
+      "name": "Roberto S.",
+      "age": 35,
+      "location": "Sevilla",
+      "rating": 5,
+      "date": "2023-12-20",
+      "treatment": "Terapia online",
+      "testimonial": "La modalidad online me permitió acceder a terapia desde casa, lo cual fue perfecto para mi horario. La calidad del tratamiento fue excelente, igual que si fuera presencial.",
+      "featured": true,
+      "verified": true
+    },
+    {
+      "id": 5,
+      "name": "Laura P.",
+      "age": 26,
+      "location": "Bilbao",
+      "rating": 5,
+      "date": "2023-12-15",
+      "treatment": "Terapia para estrés laboral",
+      "testimonial": "El estrés del trabajo me estaba afectando en todas las áreas de mi vida. Aprendí técnicas de manejo del estrés que uso a diario. Mi calidad de vida ha mejorado significativamente.",
+      "featured": false,
+      "verified": true
+    }
+  ],
+  "statistics": {
+    "totalTestimonials": 5,
+    "averageRating": 5.0,
+    "satisfactionRate": 100,
+    "treatmentTypes": {
+      "individual": 3,
+      "couple": 1,
+      "online": 1
+    }
+  },
+  "settings": {
+    "displayOnHomepage": true,
+    "maxDisplayed": 3,
+    "showRatings": true,
+    "showLocation": true,
+    "anonymizeNames": true,
+    "requireVerification": true
+  }
+}

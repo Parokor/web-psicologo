@@ -1,11 +1,4 @@
-/**
- * Bio component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.com/docs/how-to/querying-data/use-static-query/
- */
-
-import * as React from "react"
+import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
 
@@ -18,39 +11,37 @@ const Bio = () => {
             name
             summary
           }
-          social {
-            twitter
-          }
         }
       }
     }
   `)
 
-  // Set these values by editing "siteMetadata" in gatsby-config.js
   const author = data.site.siteMetadata?.author
-  const social = data.site.siteMetadata?.social
 
   return (
-    <div className="bio">
-      <StaticImage
-        className="bio-avatar"
-        layout="fixed"
-        formats={["auto", "webp", "avif"]}
-        src="../images/profile-pic.png"
-        width={50}
-        height={50}
-        quality={95}
-        alt="Profile picture"
-      />
-      {author?.name && (
-        <p>
-          Written by <strong>{author.name}</strong> {author?.summary || null}
-          {` `}
-          <a href={`https://twitter.com/${social?.twitter || ``}`}>
-            You should follow them on Twitter
-          </a>
-        </p>
-      )}
+    <div className="bg-primary-50 rounded-lg p-6">
+      <div className="flex items-start space-x-4">
+        <div className="flex-shrink-0">
+          <StaticImage
+            className="rounded-full"
+            layout="fixed"
+            formats={["auto", "webp", "avif"]}
+            src="../images/profile-pic.png"
+            width={64}
+            height={64}
+            quality={95}
+            alt="Foto de perfil"
+          />
+        </div>
+        <div className="flex-1">
+          <h4 className="text-lg font-semibold text-primary-800 mb-2">
+            Sobre {author?.name || "Dr. Psicólogo"}
+          </h4>
+          <p className="text-neutral-600 text-sm leading-relaxed">
+            {author?.summary || "Psicólogo clínico especializado en terapia cognitivo-conductual y terapia de pareja. Comprometido con el bienestar emocional y el crecimiento personal de mis pacientes."}
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

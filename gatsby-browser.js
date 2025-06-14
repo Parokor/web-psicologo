@@ -14,3 +14,21 @@ import "prismjs/themes/prism.css"
 
 // Tailwind CSS
 import './src/styles/global.css'
+
+// Netlify Identity initialization
+export const onClientEntry = () => {
+  // Initialize Netlify Identity
+  if (typeof window !== 'undefined' && window.netlifyIdentity) {
+    window.netlifyIdentity.on('init', user => {
+      if (!user) {
+        window.netlifyIdentity.on('login', () => {
+          document.location.href = '/admin/'
+        })
+      }
+    })
+    
+    window.netlifyIdentity.on('logout', () => {
+      document.location.href = '/'
+    })
+  }
+}

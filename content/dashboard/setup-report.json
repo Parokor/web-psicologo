@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-06-14T06:23:13.419Z",
+  "status": "configured",
+  "cmsType": "native",
+  "dependencies": {
+    "gatsby": "^5.14.1",
+    "netlifyCms": "^2.15.72",
+    "remark": "^6.14.0"
+  },
+  "content": {
+    "posts": 4,
+    "pages": 2,
+    "settings": 5
+  },
+  "features": {
+    "nativeMarkdown": true,
+    "visualEditor": true,
+    "mediaManagement": true,
+    "previewMode": true,
+    "gitIntegration": true
+  }
+}
