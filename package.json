@@ -12,6 +12,11 @@
     "@fontsource-variable/montserrat": "^5.0.17",
     "@fontsource/inter": "^5.2.5",
     "@fontsource/merriweather": "^5.0.8",
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "ajv": "^8.17.1",
+    "autoprefixer": "^10.4.21",
     "dotenv": "^16.4.7",
     "gatsby": "^5.14.1",
     "gatsby-plugin-feed": "^5.14.0",
@@ -22,13 +27,14 @@
     "gatsby-remark-prismjs": "^7.14.0",
     "gatsby-remark-responsive-iframe": "^6.14.0",
     "gatsby-source-filesystem": "^5.14.0",
+    "gatsby-transformer-json": "^5.14.0",
     "gatsby-transformer-remark": "^6.14.0",
     "gatsby-transformer-sharp": "^5.14.0",
-    "gatsby-transformer-json": "^5.14.0",
     "netlify-cms-app": "^2.15.72",
     "prismjs": "^1.29.0",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "tailwindcss": "^4.1.10"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",

@@ -11,7 +11,7 @@ const BlogPostTemplate = ({
   location,
 }) => {
   const siteTitle = site.siteMetadata?.title || `Title`
-  const featuredImage = getImage(post.frontmatter.featuredImage)
+  const featuredImage = null // Simplified for now
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -87,15 +87,7 @@ export const pageQuery = graphql`
         description
         categories
         tags
-        featuredImage {
-          childImageSharp {
-            gatsbyImageData(
-              width: 800
-              placeholder: BLURRED
-              formats: [AUTO, WEBP, AVIF]
-            )
-          }
-        }
+        featuredImage
       }
     }
     previous: markdownRemark(id: { eq: $previousPostId }) {

@@ -25,8 +25,7 @@ const BlogIndex = ({ data, location }) => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map(post => {
-              const image = post.frontmatter.featuredImage &&
-                getImage(post.frontmatter.featuredImage)
+              const image = null // Simplified for now
 
               return (
                 <article key={post.id} className="card group h-full flex flex-col transition-all duration-300 hover:-translate-y-1">
@@ -127,16 +126,7 @@ export const pageQuery = graphql`
           date(formatString: "DD MMMM, YYYY")
           description
           categories
-          featuredImage {
-            childImageSharp {
-              gatsbyImageData(
-                width: 600
-                aspectRatio: 1.5
-                formats: [AUTO, WEBP]
-                placeholder: BLURRED
-              )
-            }
-          }
+          featuredImage
         }
       }
     }

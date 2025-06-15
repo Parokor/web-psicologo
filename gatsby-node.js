@@ -41,8 +41,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const posts = result.data.allMarkdownRemark.nodes
 
   // Create blog posts pages
-  const blogPosts = posts.filter(post => 
-    post.internal.contentFilePath.includes('/content/blog/posts/')
+  const blogPosts = posts.filter(post =>
+    post.internal.contentFilePath && post.internal.contentFilePath.includes('/content/blog/posts/')
   )
 
   if (blogPosts.length > 0) {
@@ -63,8 +63,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 
   // Create static pages
-  const staticPages = posts.filter(post => 
-    post.internal.contentFilePath.includes('/content/pages/')
+  const staticPages = posts.filter(post =>
+    post.internal.contentFilePath && post.internal.contentFilePath.includes('/content/pages/')
   )
 
   staticPages.forEach(page => {
