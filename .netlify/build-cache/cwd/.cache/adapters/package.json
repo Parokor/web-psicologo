@@ -1,0 +1,1 @@
+{"name":"gatsby-adapters","description":"This directory contains adapters that have been automatically installed by Gatsby.","version":"1.0.0","private":true,"author":"Gatsby","license":"MIT","dependencies":{"gatsby-adapter-netlify":"1.2.0"}}
