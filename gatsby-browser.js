@@ -15,7 +15,40 @@ import "prismjs/themes/prism.css"
 // Tailwind CSS
 import './src/styles/global.css'
 
-// Netlify Identity initialization
+// Importaciones para animaciones
+// import React from 'react'
+// import AOS from 'aos'
+// import 'aos/dist/aos.css'
+// import { Toaster } from 'react-hot-toast'
+
+// Wrapper para añadir Toaster
+// export const wrapRootElement = ({ element }) => {
+//   return (
+//     <>
+//       {element}
+//       <Toaster
+//         position="bottom-right"
+//         toastOptions={{
+//           duration: 4000,
+//           style: {
+//             background: '#1A365D',
+//             color: '#fff',
+//             borderRadius: '1rem',
+//             padding: '1rem',
+//           },
+//           success: {
+//             iconTheme: {
+//               primary: '#38B2AC',
+//               secondary: '#fff',
+//             },
+//           },
+//         }}
+//       />
+//     </>
+//   )
+// }
+
+// Inicializar AOS cuando el cliente carga
 export const onClientEntry = () => {
   // Initialize Netlify Identity
   if (typeof window !== 'undefined' && window.netlifyIdentity) {
@@ -26,9 +59,21 @@ export const onClientEntry = () => {
         })
       }
     })
-    
+
     window.netlifyIdentity.on('logout', () => {
       document.location.href = '/'
     })
   }
+
+  // Inicializar AOS
+  // if (typeof window !== 'undefined') {
+  //   window.setTimeout(() => {
+  //     AOS.init({
+  //       duration: 800,
+  //       once: true,
+  //       offset: 100,
+  //       easing: 'ease-out-cubic',
+  //     })
+  //   }, 0)
+  // }
 }
