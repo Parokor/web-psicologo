@@ -1,3 +1,4 @@
+// Mock data para SocialHub - Sin sintaxis GraphQL
 import {
   FaInstagram,
   FaLinkedin,

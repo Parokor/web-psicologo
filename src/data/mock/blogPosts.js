@@ -1,3 +1,4 @@
+// Mock data para BlogPreview - Sin sintaxis GraphQL
 export const mockBlogPosts = [
   {
     id: 1,
@@ -49,32 +50,6 @@ export const mockBlogPosts = [
     likes: 78,
     slug: "/blog/relaciones-saludables-comunicacion",
     image: "/img/blog-4.jpg",
-    featured: false
-  },
-  {
-    id: 5,
-    title: "Gestión del Estrés en el Trabajo: Estrategias Prácticas",
-    excerpt: "Técnicas efectivas para mantener el equilibrio y la productividad en entornos laborales demandantes.",
-    category: "Estrés",
-    date: "2024-02-20",
-    readTime: "6 min",
-    views: 834,
-    likes: 52,
-    slug: "/blog/gestion-estres-trabajo",
-    image: "/img/blog-5.jpg",
-    featured: false
-  },
-  {
-    id: 6,
-    title: "El Poder de la Gratitud en el Bienestar Mental",
-    excerpt: "Cómo cultivar una práctica de gratitud puede transformar tu perspectiva y mejorar tu salud mental.",
-    category: "Bienestar",
-    date: "2024-02-15",
-    readTime: "4 min",
-    views: 672,
-    likes: 38,
-    slug: "/blog/poder-gratitud-bienestar",
-    image: "/img/blog-6.jpg",
     featured: false
   }
 ]

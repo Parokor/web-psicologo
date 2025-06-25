@@ -19,10 +19,10 @@ const BlogPreview = () => {
   const [hoveredCard, setHoveredCard] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState('all')
 
-  // Usar datos mock importados - Sin sintaxis GraphQL
+  // Datos importados desde archivo separado para evitar conflictos con GraphQL
   const blogPosts = mockBlogPosts
 
-  const categories = ['all', 'Ansiedad', 'Autoestima', 'Mindfulness', 'Relaciones']
+  const categories = ['all', 'Ansiedad', 'Autoestima', 'Mindfulness', 'Relaciones', 'Estrés', 'Bienestar']
 
   const filteredPosts = selectedCategory === 'all'
     ? blogPosts
