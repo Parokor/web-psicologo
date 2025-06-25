@@ -1,122 +1,345 @@
-import React from "react"
-import { useStaticQuery, graphql, Link } from "gatsby"
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import {
+  FiCalendar,
+  FiClock,
+  FiArrowRight,
+  FiTag,
+  FiEye,
+  FiHeart,
+  FiShare2
+} from 'react-icons/fi'
+import { Link } from 'gatsby'
+import Tilt from 'react-parallax-tilt'
 
 const BlogPreview = () => {
-  const data = useStaticQuery(graphql`
-    query {
-      allMarkdownRemark(
-        sort: { frontmatter: { date: DESC } }
-        limit: 3
-        filter: { fileAbsolutePath: { regex: "/content/blog/posts/" } }
-      ) {
-        nodes {
-          id
-          excerpt(pruneLength: 160)
-          fields {
-            slug
-          }
-          frontmatter {
-            title
-            date(formatString: "DD MMMM, YYYY")
-            description
-            categories
-            featuredImage
-          }
-        }
-      }
-    }
-  `)
+  const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true })
+  const [hoveredCard, setHoveredCard] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState('all')
 
-  const posts = data.allMarkdownRemark.nodes
+  // Mock data - En producción vendrá de GraphQL
+  const blogPosts = [
+    {
+      id: 1,
+      title: "5 Técnicas Efectivas para Manejar la Ansiedad",
+      excerpt: "Descubre estrategias prácticas y basadas en evidencia para reducir los niveles de ansiedad en tu día a día.",
+      category: "Ansiedad",
+      date: "2024-03-15",
+      readTime: "5 min",
+      views: 1234,
+      likes: 89,
+      slug: "/blog/tecnicas-manejar-ansiedad",
+      image: "/img/blog-1.jpg",
+      featured: true
+    },
+    {
+      id: 2,
+      title: "Construyendo Autoestima Saludable: Una Guía Práctica",
+      excerpt: "Pasos concretos para desarrollar una autoestima sólida y duradera que te permita enfrentar los desafíos con confianza.",
+      category: "Autoestima",
+      date: "2024-03-10",
+      readTime: "8 min",
+      views: 956,
+      likes: 67,
+      slug: "/blog/construir-autoestima-saludable",
+      image: "/img/blog-2.jpg",
+      featured: false
+    },
+    {
+      id: 3,
+      title: "La Importancia del Mindfulness en la Vida Moderna",
+      excerpt: "Cómo la práctica de mindfulness puede transformar tu bienestar emocional y ayudarte a vivir más plenamente.",
+      category: "Mindfulness",
+      date: "2024-03-05",
+      readTime: "6 min",
+      views: 789,
+      likes: 45,
+      slug: "/blog/mindfulness-vida-moderna",
+      image: "/img/blog-3.jpg",
+      featured: false
+    },
+    {
+      id: 4,
+      title: "Relaciones Saludables: Claves para la Comunicación",
+      excerpt: "Herramientas fundamentales para mejorar la comunicación en tus relaciones personales y crear vínculos más profundos.",
+      category: "Relaciones",
+      date: "2024-02-28",
+      readTime: "7 min",
+      views: 1100,
+      likes: 78,
+      slug: "/blog/relaciones-saludables-comunicacion",
+      image: "/img/blog-4.jpg",
+      featured: false
+    }
+  ]
+
+  const categories = ['all', 'Ansiedad', 'Autoestima', 'Mindfulness', 'Relaciones']
+
+  const filteredPosts = selectedCategory === 'all'
+    ? blogPosts
+    : blogPosts.filter(post => post.category === selectedCategory)
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    },
+  }
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    },
+  }
 
   return (
-    <section id="blog" className="section bg-pattern">
-      <div className="container-custom">
-        <div className="mb-16 text-center">
-          <span className="inline-block py-1 px-3 rounded-full bg-primary-100 text-primary-700 text-sm font-medium mb-4">
-            Blog profesional
-          </span>
-          <h2 className="section-title mb-4">Artículos recientes</h2>
-          <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-            Comparto conocimientos y reflexiones sobre psicología, salud mental y bienestar emocional
-          </p>
-        </div>
+    <section className="py-20 bg-gradient-to-b from-white to-primary-50/50" data-aos="fade-up">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="max-w-7xl mx-auto"
+        >
+          {/* Header */}
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+              Últimos <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-500">Artículos</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              Contenido valioso para tu bienestar emocional y crecimiento personal
+            </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts.map(post => {
-            const image = null // Simplified for now
+            {/* Filtros de categoría */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap justify-center gap-3"
+            >
+              {categories.map((category) => (
+                <motion.button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    selectedCategory === category
+                      ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
+                      : 'bg-white text-gray-600 hover:bg-primary-50 hover:text-primary-700 border border-gray-200'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {category === 'all' ? 'Todos' : category}
+                </motion.button>
+              ))}
+            </motion.div>
+          </motion.div>
 
-            return (
-              <article key={post.id} className="card group h-full flex flex-col transition-all duration-300 hover:-translate-y-1">
-                <div className="relative overflow-hidden">
-                  {image ? (
-                    <GatsbyImage
-                      image={image}
-                      alt={post.frontmatter.title}
-                      className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-52 bg-primary-50 flex items-center justify-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
+          {/* Grid de artículos */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={selectedCategory}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={containerVariants}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
+            >
+              {filteredPosts.slice(0, 3).map((post, index) => (
+                <motion.article
+                  key={post.id}
+                  variants={cardVariants}
+                  className="group relative"
+                  onHoverStart={() => setHoveredCard(post.id)}
+                  onHoverEnd={() => setHoveredCard(null)}
+                >
+                  <Tilt
+                    tiltMaxAngleX={5}
+                    tiltMaxAngleY={5}
+                    perspective={1000}
+                    glareEnable={true}
+                    glareMaxOpacity={0.1}
+                    scale={1.02}
+                  >
+                    <div className="relative bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden h-full">
+                      {/* Badge de destacado */}
+                      {post.featured && (
+                        <motion.div
+                          initial={{ scale: 0, rotate: -45 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          className="absolute top-4 left-4 z-10 bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-xs font-bold px-3 py-1 rounded-full"
+                        >
+                          Destacado
+                        </motion.div>
+                      )}
+
+                      {/* Imagen */}
+                      <div className="relative h-48 overflow-hidden rounded-t-3xl">
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-br from-primary-200 to-secondary-200"
+                          animate={{
+                            scale: hoveredCard === post.id ? 1.1 : 1,
+                          }}
+                          transition={{ duration: 0.5 }}
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-gray-600 font-medium">Imagen del artículo</span>
+                        </div>
+
+                        {/* Overlay con estadísticas */}
+                        <motion.div
+                          className="absolute inset-0 bg-black/50 flex items-center justify-center gap-6"
+                          initial={{ opacity: 0 }}
+                          animate={{
+                            opacity: hoveredCard === post.id ? 1 : 0
+                          }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div className="flex items-center gap-1 text-white text-sm">
+                            <FiEye />
+                            <span>{post.views}</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-white text-sm">
+                            <FiHeart />
+                            <span>{post.likes}</span>
+                          </div>
+                          <motion.button
+                            className="p-2 bg-white/20 rounded-full backdrop-blur-sm"
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                          >
+                            <FiShare2 className="text-white" />
+                          </motion.button>
+                        </motion.div>
+                      </div>
+
+                      {/* Contenido */}
+                      <div className="p-6 flex flex-col h-64">
+                        {/* Metadata */}
+                        <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <FiCalendar className="text-primary-500" />
+                            <span>{new Date(post.date).toLocaleDateString()}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <FiClock className="text-secondary-500" />
+                            <span>{post.readTime}</span>
+                          </div>
+                        </div>
+
+                        {/* Categoría */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <FiTag className="text-primary-500" />
+                          <span className="text-xs font-semibold text-primary-600 bg-primary-100 px-2 py-1 rounded-full">
+                            {post.category}
+                          </span>
+                        </div>
+
+                        {/* Título */}
+                        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-300 line-clamp-2">
+                          {post.title}
+                        </h3>
+
+                        {/* Excerpt */}
+                        <p className="text-gray-600 text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
+                          {post.excerpt}
+                        </p>
+
+                        {/* Link de leer más */}
+                        <Link
+                          to={post.slug}
+                          className="inline-flex items-center gap-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors duration-300 group"
+                        >
+                          <span>Leer más</span>
+                          <motion.div
+                            animate={{ x: hoveredCard === post.id ? 5 : 0 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <FiArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
+                          </motion.div>
+                        </Link>
+                      </div>
+
+                      {/* Borde gradiente animado */}
+                      <motion.div
+                        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{
+                          background: 'linear-gradient(45deg, #0ca4b8, #5a9cf2, #0ca4b8)',
+                          backgroundSize: '300% 300%',
+                        }}
+                        animate={{
+                          backgroundPosition: hoveredCard === post.id ? ['0% 50%', '100% 50%', '0% 50%'] : '0% 50%',
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "linear",
+                        }}
+                      />
                     </div>
-                  )}
+                  </Tilt>
+                </motion.article>
+              ))}
+            </motion.div>
+          </AnimatePresence>
 
-                  {/* Date badge */}
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-primary-700 text-sm font-medium py-1 px-3 rounded-full shadow-sm">
-                    {post.frontmatter.date}
-                  </div>
-                </div>
-
-                <div className="p-6 flex-grow flex flex-col">
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {post.frontmatter.categories && post.frontmatter.categories.map(category => (
-                      <span key={category} className="text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded-full">
-                        {category}
-                      </span>
-                    ))}
-                  </div>
-
-                  <h3 className="text-xl font-bold mb-3 text-primary-800 group-hover:text-primary-600 transition-colors">
-                    <Link to={`/blog${post.fields.slug}`} className="hover:no-underline">
-                      {post.frontmatter.title}
-                    </Link>
-                  </h3>
-
-                  <p className="text-neutral-600 mb-4 line-clamp-3">
-                    {post.frontmatter.description || post.excerpt}
-                  </p>
-
-                  <div className="mt-auto pt-4">
-                    <Link
-                      to={`/blog${post.fields.slug}`}
-                      className="inline-flex items-center text-primary-600 font-medium hover:text-primary-700 transition-colors"
-                    >
-                      Leer más
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            )
-          })}
-        </div>
-
-        <div className="text-center mt-12">
-          <Link
-            to="/blog"
-            className="btn-primary"
+          {/* Botón Ver todos */}
+          <motion.div
+            variants={itemVariants}
+            className="text-center"
           >
-            Ver todos los artículos
-          </Link>
-        </div>
+            <Link to="/blog">
+              <motion.button
+                className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {/* Efecto de brillo */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
+                  initial={{ x: '-200%' }}
+                  whileHover={{ x: '200%' }}
+                  transition={{ duration: 0.8 }}
+                />
+
+                <span className="relative">Ver todos los artículos</span>
+                <motion.div
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <FiArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
+                </motion.div>
+              </motion.button>
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
 }
+
+export default BlogPreview
 
 export default BlogPreview
