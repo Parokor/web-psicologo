@@ -1,248 +1,514 @@
-import React, { useState } from "react"
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useForm } from 'react-hook-form'
+import { useInView } from 'react-intersection-observer'
+import {
+  FiMail,
+  FiPhone,
+  FiMapPin,
+  FiClock,
+  FiSend,
+  FiCheck,
+  FiMessageCircle,
+  FiUser,
+  FiCalendar
+} from 'react-icons/fi'
+import { FaWhatsapp } from 'react-icons/fa'
+import toast from 'react-hot-toast'
+import Tilt from 'react-parallax-tilt'
 
 const Contact = () => {
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  })
-
-  const [errors, setErrors] = useState({})
+  const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const validateForm = () => {
-    const newErrors = {}
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch
+  } = useForm()
 
-    if (!formState.name.trim()) {
-      newErrors.name = "El nombre es obligatorio"
-    }
+  const watchedFields = watch()
 
-    if (!formState.email.trim()) {
-      newErrors.email = "El email es obligatorio"
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
-      newErrors.email = "El formato del email no es válido"
-    }
-
-    if (!formState.message.trim()) {
-      newErrors.message = "El mensaje es obligatorio"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormState(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    if (!validateForm()) return
-
+  const onSubmit = async (data) => {
     setIsSubmitting(true)
 
-    // Simulación de envío de formulario
-    // En producción, aquí iría la lógica para enviar el formulario a un servicio como Netlify Forms,
-    // FormSpree, o tu propio backend
+    // Simulación de envío (reemplazar con tu lógica real)
     try {
-      // Simular una petición
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 2000))
 
-      // Resetear el formulario tras envío exitoso
-      setFormState({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
+      toast.success('¡Mensaje enviado con éxito! Te contactaré pronto.', {
+        duration: 5000,
+        icon: '✅',
       })
-      setSubmitSuccess(true)
 
-      // Ocultar el mensaje de éxito después de 5 segundos
-      setTimeout(() => setSubmitSuccess(false), 5000)
+      setIsSubmitted(true)
+      reset()
+
+      // Reset después de 5 segundos
+      setTimeout(() => setIsSubmitted(false), 5000)
     } catch (error) {
-      console.error("Error al enviar el formulario:", error)
+      toast.error('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.', {
+        duration: 5000,
+        icon: '❌',
+      })
     } finally {
       setIsSubmitting(false)
     }
   }
 
+  const contactInfo = [
+    { icon: FiPhone, label: 'Teléfono', value: '+34 600 123 456', link: 'tel:+34600123456' },
+    { icon: FiMail, label: 'Email', value: 'consulta@psicologo.com', link: 'mailto:consulta@psicologo.com' },
+    { icon: FiMapPin, label: 'Ubicación', value: 'Madrid, España', link: '#' },
+    { icon: FiClock, label: 'Horario', value: 'Lun-Vie: 9:00-20:00', link: '#' },
+  ]
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    },
+  }
+
   return (
-    <section id="contacto" className="section bg-accent-mint/30">
-      <div className="container-custom">
-        <div className="mb-16 text-center">
-          <span className="inline-block py-1 px-3 rounded-full bg-primary-100 text-primary-700 text-sm font-medium mb-4">
-            Estoy para ayudarte
-          </span>
-          <h2 className="section-title mb-4">Contacto</h2>
-          <p className="text-lg text-neutral-600 max-w-3xl mx-auto">
-            Si tienes alguna pregunta o quieres solicitar una cita, no dudes en contactarme
-          </p>
-        </div>
+    <section className="py-20 bg-gradient-to-b from-primary-50/30 to-white relative overflow-hidden" data-aos="fade-up">
+      {/* Decoración de fondo */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute -top-40 -right-40 w-80 h-80 bg-primary-200 rounded-full blur-3xl opacity-20"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+        <motion.div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary-200 rounded-full blur-3xl opacity-20"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            rotate: [0, -90, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      </div>
 
-        <div className="max-w-4xl mx-auto card overflow-hidden">
-          <div className="md:flex">
-            <div className="md:w-2/5 bg-gradient-to-br from-primary-600 to-primary-700 p-8 text-white">
-              <h3 className="text-2xl font-bold mb-6">Información de contacto</h3>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="max-w-7xl mx-auto"
+        >
+          {/* Header */}
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+              ¿Listo para <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-500">comenzar?</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Dar el primer paso es el acto más valiente. Estoy aquí para acompañarte.
+            </p>
+          </motion.div>
 
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="bg-white/20 p-2 rounded-lg mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-medium mb-1">Dirección:</p>
-                    <p className="text-white/80">[Tu dirección profesional]</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-white/20 p-2 rounded-lg mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-medium mb-1">Teléfono:</p>
-                    <p className="text-white/80">[Tu número de teléfono]</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-white/20 p-2 rounded-lg mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-medium mb-1">Email:</p>
-                    <p className="text-white/80">[Tu email profesional]</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-white/20 p-2 rounded-lg mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-medium mb-1">Horario:</p>
-                    <p className="text-white/80">Lunes a Viernes: 9:00 - 20:00</p>
-                    <p className="text-white/80">Sábados: 10:00 - 14:00</p>
-                  </div>
-                </div>
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Información de contacto */}
+            <motion.div variants={itemVariants} className="space-y-8">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Información de Contacto
+                </h3>
+                <p className="text-gray-600 mb-8">
+                  Puedes contactarme a través de cualquiera de estos medios.
+                  Respondo en un plazo máximo de 24 horas.
+                </p>
               </div>
 
-              {/* Decorative element */}
-              <div className="absolute bottom-0 right-0 w-32 h-32 bg-white/5 rounded-full -mb-16 -mr-16"></div>
-              <div className="absolute top-0 left-0 w-20 h-20 bg-white/5 rounded-full -mt-10 -ml-10"></div>
-            </div>
-
-            <div className="md:w-3/5 p-8 relative">
-              {submitSuccess ? (
-                <div className="bg-primary-50 border border-primary-200 text-primary-700 px-4 py-3 rounded-xl mb-6" role="alert">
-                  <div className="flex">
-                    <div className="flex-shrink-0">
-                      <svg className="h-5 w-5 text-primary-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div className="ml-3">
-                      <p className="font-bold">¡Mensaje enviado!</p>
-                      <p>Gracias por contactar. Te responderé lo antes posible.</p>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="form-label">Nombre *</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formState.name}
-                    onChange={handleChange}
-                    className={`form-input ${errors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-100' : ''}`}
-                    placeholder="Tu nombre completo"
-                  />
-                  {errors.name && <p className="form-error">{errors.name}</p>}
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="form-label">Email *</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formState.email}
-                    onChange={handleChange}
-                    className={`form-input ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-100' : ''}`}
-                    placeholder="tu@email.com"
-                  />
-                  {errors.email && <p className="form-error">{errors.email}</p>}
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="form-label">Teléfono (opcional)</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formState.phone}
-                    onChange={handleChange}
-                    className="form-input"
-                    placeholder="Tu número de teléfono"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="form-label">Mensaje *</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="5"
-                    value={formState.message}
-                    onChange={handleChange}
-                    className={`form-input ${errors.message ? 'border-red-500 focus:border-red-500 focus:ring-red-100' : ''}`}
-                    placeholder="¿En qué puedo ayudarte?"
-                  ></textarea>
-                  {errors.message && <p className="form-error">{errors.message}</p>}
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              {/* Cards de contacto */}
+              <div className="space-y-4">
+                {contactInfo.map((info, index) => (
+                  <motion.a
+                    key={index}
+                    href={info.link}
+                    className="block group"
+                    whileHover={{ x: 10 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Enviando...
-                      </>
-                    ) : 'Enviar mensaje'}
-                  </button>
-                </div>
-              </form>
+                    <div className="flex items-center gap-4 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-primary-50 group-hover:to-secondary-50">
+                      <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <info.icon className="text-2xl text-primary-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">{info.label}</p>
+                        <p className="text-lg font-semibold text-gray-900">{info.value}</p>
+                      </div>
+                    </div>
+                  </motion.a>
+                ))}
+              </div>
+
+              {/* Mapa o imagen */}
+              <motion.div variants={itemVariants}>
+                <Tilt
+                  tiltMaxAngleX={5}
+                  tiltMaxAngleY={5}
+                  perspective={1000}
+                  glareEnable={true}
+                  glareMaxOpacity={0.1}
+                >
+                  <div className="relative bg-gradient-to-br from-primary-100 to-secondary-100 rounded-3xl p-8 shadow-xl h-64 flex items-center justify-center">
+                    <p className="text-gray-600">Mapa de ubicación</p>
+                  </div>
+                </Tilt>
+              </motion.div>
+            </motion.div>
+
+            {/* Formulario */}
+            <motion.div variants={itemVariants}>
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl p-8 border border-white/20">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Envíame un mensaje
+                </h3>
+
+                <AnimatePresence mode="wait">
+                  {!isSubmitted ? (
+                    <motion.form
+                      key="form"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onSubmit={handleSubmit(onSubmit)}
+                      className="space-y-6"
+                    >
+                      {/* Nombre */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1 }}
+                      >
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Nombre completo
+                        </label>
+                        <div className="relative">
+                          <FiUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <input
+                            {...register('name', {
+                              required: 'El nombre es requerido',
+                              minLength: { value: 3, message: 'Mínimo 3 caracteres' }
+                            })}
+                            className={`w-full pl-12 pr-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-100 ${
+                              errors.name
+                                ? 'border-red-300 focus:border-red-500'
+                                : watchedFields.name
+                                  ? 'border-green-300 focus:border-green-500'
+                                  : 'border-gray-200 focus:border-primary-500'
+                            }`}
+                            placeholder="Tu nombre"
+                          />
+                          {watchedFields.name && !errors.name && (
+                            <FiCheck className="absolute right-4 top-1/2 transform -translate-y-1/2 text-green-500" />
+                          )}
+                        </div>
+                        {errors.name && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-red-500 text-sm mt-1"
+                          >
+                            {errors.name.message}
+                          </motion.p>
+                        )}
+                      </motion.div>
+
+                      {/* Email */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Email
+                        </label>
+                        <div className="relative">
+                          <FiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <input
+                            {...register('email', {
+                              required: 'El email es requerido',
+                              pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: 'Email inválido'
+                              }
+                            })}
+                            type="email"
+                            className={`w-full pl-12 pr-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-100 ${
+                              errors.email
+                                ? 'border-red-300 focus:border-red-500'
+                                : watchedFields.email && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(watchedFields.email)
+                                  ? 'border-green-300 focus:border-green-500'
+                                  : 'border-gray-200 focus:border-primary-500'
+                            }`}
+                            placeholder="tu@email.com"
+                          />
+                          {watchedFields.email && !errors.email && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(watchedFields.email) && (
+                            <FiCheck className="absolute right-4 top-1/2 transform -translate-y-1/2 text-green-500" />
+                          )}
+                        </div>
+                        {errors.email && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-red-500 text-sm mt-1"
+                          >
+                            {errors.email.message}
+                          </motion.p>
+                        )}
+                      </motion.div>
+
+                      {/* Teléfono */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Teléfono (opcional)
+                        </label>
+                        <div className="relative">
+                          <FiPhone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <input
+                            {...register('phone')}
+                            type="tel"
+                            className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-500 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-100"
+                            placeholder="+34 600 000 000"
+                          />
+                        </div>
+                      </motion.div>
+
+                      {/* Tipo de consulta */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4 }}
+                      >
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Tipo de consulta
+                        </label>
+                        <div className="relative">
+                          <FiCalendar className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                          <select
+                            {...register('consultType', { required: 'Selecciona un tipo de consulta' })}
+                            className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-500 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-100 appearance-none"
+                          >
+                            <option value="">Selecciona una opción</option>
+                            <option value="primera-consulta">Primera consulta</option>
+                            <option value="terapia-individual">Terapia individual</option>
+                            <option value="terapia-pareja">Terapia de pareja</option>
+                            <option value="consulta-online">Consulta online</option>
+                            <option value="informacion">Información general</option>
+                          </select>
+                        </div>
+                        {errors.consultType && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-red-500 text-sm mt-1"
+                          >
+                            {errors.consultType.message}
+                          </motion.p>
+                        )}
+                      </motion.div>
+
+                      {/* Mensaje */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Mensaje
+                        </label>
+                        <div className="relative">
+                          <FiMessageCircle className="absolute left-4 top-4 text-gray-400" />
+                          <textarea
+                            {...register('message', {
+                              required: 'El mensaje es requerido',
+                              minLength: { value: 10, message: 'Mínimo 10 caracteres' }
+                            })}
+                            rows={4}
+                            className={`w-full pl-12 pr-4 py-3 rounded-xl border-2 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-primary-100 resize-none ${
+                              errors.message
+                                ? 'border-red-300 focus:border-red-500'
+                                : watchedFields.message && watchedFields.message.length >= 10
+                                  ? 'border-green-300 focus:border-green-500'
+                                  : 'border-gray-200 focus:border-primary-500'
+                            }`}
+                            placeholder="Cuéntame cómo puedo ayudarte..."
+                          />
+                          {watchedFields.message && watchedFields.message.length >= 10 && !errors.message && (
+                            <FiCheck className="absolute right-4 top-4 text-green-500" />
+                          )}
+                        </div>
+                        {errors.message && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-red-500 text-sm mt-1"
+                          >
+                            {errors.message.message}
+                          </motion.p>
+                        )}
+                      </motion.div>
+
+                      {/* Checkbox de privacidad */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.6 }}
+                        className="flex items-start gap-3"
+                      >
+                        <input
+                          {...register('privacy', { required: 'Debes aceptar la política de privacidad' })}
+                          type="checkbox"
+                          className="mt-1 w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                        />
+                        <label className="text-sm text-gray-600">
+                          He leído y acepto la{' '}
+                          <a href="#" className="text-primary-600 hover:text-primary-700 underline">
+                            política de privacidad
+                          </a>{' '}
+                          y el tratamiento de mis datos personales.
+                        </label>
+                      </motion.div>
+                      {errors.privacy && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-red-500 text-sm"
+                        >
+                          {errors.privacy.message}
+                        </motion.p>
+                      )}
+
+                      {/* Botón de envío */}
+                      <motion.button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full relative group overflow-hidden"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="relative bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                          {/* Efecto de onda */}
+                          <motion.div
+                            className="absolute inset-0 bg-white/20"
+                            initial={{ scale: 0, opacity: 1 }}
+                            whileHover={{ scale: 2, opacity: 0 }}
+                            transition={{ duration: 0.6 }}
+                          />
+
+                          <span className="relative flex items-center justify-center gap-2">
+                            {isSubmitting ? (
+                              <>
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                Enviando...
+                              </>
+                            ) : (
+                              <>
+                                <FiSend />
+                                Enviar mensaje
+                              </>
+                            )}
+                          </span>
+                        </div>
+                      </motion.button>
+                    </motion.form>
+                  ) : (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      className="text-center py-12"
+                    >
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                        className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                      >
+                        <FiCheck className="text-3xl text-green-600" />
+                      </motion.div>
+                      <h4 className="text-2xl font-bold text-gray-900 mb-2">
+                        ¡Mensaje enviado!
+                      </h4>
+                      <p className="text-gray-600">
+                        Te responderé lo antes posible.
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Botón flotante de WhatsApp */}
+      <motion.a
+        href="https://wa.me/34600123456?text=Hola,%20me%20gustaría%20agendar%20una%20consulta"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-8 right-8 z-50 group"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 1, type: "spring", stiffness: 200 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <div className="relative">
+          {/* Pulse effect */}
+          <div className="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-25" />
+
+          {/* Button */}
+          <div className="relative bg-green-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+            <FaWhatsapp className="text-3xl" />
+          </div>
+
+          {/* Tooltip */}
+          <div className="absolute bottom-full right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <div className="bg-gray-900 text-white text-sm py-2 px-4 rounded-lg whitespace-nowrap">
+              ¡Chatea conmigo!
+              <div className="absolute top-full right-4 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-gray-900" />
             </div>
           </div>
         </div>
-      </div>
+      </motion.a>
     </section>
   )
 }
