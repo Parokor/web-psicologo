@@ -41,6 +41,7 @@
     "react": "^18.1.0",
     "react-countup": "^6.5.3",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.58.1",
     "react-hot-toast": "^2.5.2",
     "react-intersection-observer": "^9.16.0",
     "react-parallax-tilt": "^1.7.298",
@@ -76,6 +77,12 @@
     "serve:local": "gatsby serve --host 0.0.0.0",
     "lighthouse": "lighthouse http://localhost:9000 --view",
     "test:performance": "npm run build && npm run serve & sleep 5 && npm run lighthouse"
+  },
+  "resolutions": {
+    "graphql": "^16.8.1"
+  },
+  "overrides": {
+    "graphql": "^16.8.1"
   },
   "engines": {
     "node": ">=18.0.0",

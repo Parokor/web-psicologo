@@ -1,6 +1,9 @@
 const plugins = require(`./api-runner-browser-plugins`)
-const { getResourceURLsForPathname, loadPage, loadPageSync } =
-  require(`./loader`).publicLoader
+const {
+  getResourceURLsForPathname,
+  loadPage,
+  loadPageSync,
+} = require(`./loader`).publicLoader
 
 exports.apiRunner = (api, args = {}, defaultReturn, argTransform) => {
   // Hooks for gatsby-cypress's API handler
