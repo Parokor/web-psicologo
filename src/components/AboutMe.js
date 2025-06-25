@@ -1,107 +1,247 @@
-import React from "react"
-import { StaticImage } from "gatsby-plugin-image"
+import React from 'react'
+import { motion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import { FiBriefcase, FiAward, FiBook, FiHeart, FiUsers, FiTarget } from 'react-icons/fi'
+import Tilt from 'react-parallax-tilt'
 
 const AboutMe = () => {
+  const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true })
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    },
+  }
+
+  const specialties = [
+    { icon: FiHeart, title: "Ansiedad y Estrés", description: "Técnicas efectivas para manejar la ansiedad" },
+    { icon: FiUsers, title: "Terapia de Pareja", description: "Fortalecimiento de relaciones saludables" },
+    { icon: FiTarget, title: "Desarrollo Personal", description: "Alcanza tu máximo potencial" },
+    { icon: FiBriefcase, title: "Burnout Laboral", description: "Recupera el equilibrio vida-trabajo" },
+  ]
+
+  const timeline = [
+    { year: "2014", title: "Licenciatura en Psicología", institution: "Universidad Complutense" },
+    { year: "2016", title: "Máster en Psicología Clínica", institution: "Universidad Autónoma" },
+    { year: "2018", title: "Especialización en TCC", institution: "Instituto Beck" },
+    { year: "2020", title: "Certificación en Mindfulness", institution: "MBSR Center" },
+  ]
+
   return (
-    <section id="sobre-mi" className="section bg-white">
-      <div className="container-custom">
-        <h2 className="section-title mb-16">Sobre mí</h2>
+    <section className="py-20 bg-gradient-to-b from-white to-primary-50/30 overflow-hidden" data-aos="fade-up">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="max-w-7xl mx-auto"
+        >
+          {/* Header */}
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+              Sobre <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-secondary-500">Mí</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Comprometido con tu bienestar emocional y crecimiento personal
+            </p>
+          </motion.div>
 
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-          {/* Profile image with decorative elements */}
-          <div className="lg:w-2/5 relative">
-            <div className="relative z-10">
-              <div className="rounded-2xl overflow-hidden shadow-soft">
-                <StaticImage
-                  src="../images/profile.jpg" // Añade esta imagen a src/images/
-                  alt="Dr. [Nombre]"
-                  className="w-full h-full object-cover"
-                  placeholder="blurred"
-                />
-              </div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
+            {/* Imagen y estadísticas */}
+            <motion.div variants={itemVariants} className="relative">
+              <Tilt
+                tiltMaxAngleX={10}
+                tiltMaxAngleY={10}
+                perspective={1000}
+                glareEnable={true}
+                glareMaxOpacity={0.2}
+              >
+                <div className="relative">
+                  {/* Decoración de fondo */}
+                  <motion.div
+                    className="absolute -inset-4 bg-gradient-to-r from-primary-400 to-secondary-400 rounded-3xl opacity-20 blur-2xl"
+                    animate={{
+                      scale: [1, 1.05, 1],
+                    }}
+                    transition={{
+                      duration: 5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
 
-              {/* Experience badge */}
-              <div className="absolute -bottom-5 -right-5 bg-primary-500 text-white py-3 px-5 rounded-xl shadow-soft">
-                <span className="block text-sm font-medium">Experiencia</span>
-                <span className="block text-2xl font-bold">[X] años</span>
-              </div>
-            </div>
+                  {/* Imagen placeholder */}
+                  <div className="relative bg-gradient-to-br from-primary-100 to-secondary-100 rounded-3xl p-8 shadow-xl">
+                    <div className="w-full h-96 bg-gradient-to-br from-primary-200 to-secondary-200 rounded-2xl flex items-center justify-center">
+                      <p className="text-gray-600 text-lg">Foto Profesional</p>
+                    </div>
+                  </div>
 
-            {/* Decorative elements */}
-            <div className="absolute top-0 left-0 w-full h-full -translate-x-4 translate-y-4 rounded-2xl border-2 border-primary-200 -z-10"></div>
-            <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-accent-mint -z-10"></div>
-          </div>
+                  {/* Badges flotantes */}
+                  <motion.div
+                    className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl p-4"
+                    animate={{ y: [-5, 5, -5] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <FiAward className="text-3xl text-primary-500 mb-2" />
+                    <p className="text-sm font-semibold">10+ años</p>
+                    <p className="text-xs text-gray-600">Experiencia</p>
+                  </motion.div>
 
-          {/* Content */}
-          <div className="lg:w-3/5">
-            <div className="space-y-6">
-              <div className="inline-block py-1 px-3 rounded-full bg-primary-100 text-primary-700 text-sm font-medium mb-2">
-                Psicólogo Sanitario Colegiado Nº [Número]
-              </div>
+                  <motion.div
+                    className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4"
+                    animate={{ y: [5, -5, 5] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                  >
+                    <FiUsers className="text-3xl text-secondary-500 mb-2" />
+                    <p className="text-sm font-semibold">500+</p>
+                    <p className="text-xs text-gray-600">Pacientes</p>
+                  </motion.div>
+                </div>
+              </Tilt>
+            </motion.div>
 
-              <h3 className="text-2xl md:text-3xl font-bold text-primary-800 mb-4">Enfoque centrado en la persona</h3>
+            {/* Contenido */}
+            <motion.div variants={itemVariants} className="space-y-6">
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                Dr. [Nombre del Psicólogo]
+              </h3>
 
-              <p className="text-lg text-neutral-700 leading-relaxed">
-                Soy psicólogo sanitario colegiado con más de <span className="font-medium text-primary-700">[X] años de experiencia</span> en [especialidad].
-                Me especializo en el tratamiento de [áreas específicas] utilizando enfoques basados en
-                evidencia como <span className="font-medium text-primary-700">[enfoques terapéuticos]</span>.
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Mi pasión por la psicología nació del deseo profundo de ayudar a las personas
+                a superar sus desafíos emocionales y alcanzar una vida plena y significativa.
               </p>
 
-              <p className="text-lg text-neutral-700 leading-relaxed">
-                Mi formación incluye [formación relevante] y continúo actualizándome constantemente
-                para ofrecer las técnicas más efectivas y actuales.
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Con más de 10 años de experiencia, he tenido el privilegio de acompañar a
+                cientos de personas en su viaje hacia el bienestar emocional, utilizando
+                enfoques basados en evidencia científica y adaptados a cada individuo.
               </p>
 
-              <p className="text-lg text-neutral-700 leading-relaxed">
-                Mi enfoque terapéutico se centra en [describe tu enfoque], creando un espacio seguro
-                donde puedas explorar tus dificultades y desarrollar estrategias efectivas para mejorar tu bienestar.
-              </p>
+              <div className="flex flex-wrap gap-4 pt-4">
+                <motion.div
+                  className="flex items-center gap-2 px-4 py-2 bg-primary-100 rounded-full"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <FiBook className="text-primary-600" />
+                  <span className="text-sm font-medium text-primary-700">Formación Continua</span>
+                </motion.div>
 
-              {/* Credentials and services */}
-              <div className="flex flex-col sm:flex-row gap-4 mt-8">
-                <a href="/cv" className="btn-outline">
-                  Ver currículum
-                </a>
-                <a href="#servicios" className="btn-ghost">
-                  Servicios que ofrezco
-                </a>
+                <motion.div
+                  className="flex items-center gap-2 px-4 py-2 bg-secondary-100 rounded-full"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <FiHeart className="text-secondary-600" />
+                  <span className="text-sm font-medium text-secondary-700">Enfoque Empático</span>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Especialidades */}
+          <motion.div variants={itemVariants} className="mb-20">
+            <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              Áreas de Especialización
+            </h3>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {specialties.map((specialty, index) => (
+                <motion.div
+                  key={index}
+                  className="relative group"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary-400 to-secondary-400 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+
+                  <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl flex items-center justify-center mb-4">
+                      <specialty.icon className="text-2xl text-primary-600" />
+                    </div>
+
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                      {specialty.title}
+                    </h4>
+
+                    <p className="text-sm text-gray-600">
+                      {specialty.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Timeline de formación */}
+          <motion.div variants={itemVariants}>
+            <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              Mi Trayectoria Profesional
+            </h3>
+
+            <div className="relative">
+              {/* Línea central */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-primary-200 to-secondary-200" />
+
+              <div className="space-y-12">
+                {timeline.map((item, index) => (
+                  <motion.div
+                    key={index}
+                    className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}
+                    initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                  >
+                    <div className="flex-1" />
+
+                    {/* Punto en la línea */}
+                    <div className="relative z-10">
+                      <motion.div
+                        className="w-4 h-4 bg-gradient-to-br from-primary-400 to-secondary-400 rounded-full"
+                        whileHover={{ scale: 1.5 }}
+                      />
+                    </div>
+
+                    <div className={`flex-1 ${index % 2 === 0 ? 'pl-8' : 'pr-8'}`}>
+                      <motion.div
+                        className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <span className="text-sm font-semibold text-primary-600">
+                          {item.year}
+                        </span>
+                        <h4 className="text-lg font-bold text-gray-900 mt-1">
+                          {item.title}
+                        </h4>
+                        <p className="text-sm text-gray-600 mt-1">
+                          {item.institution}
+                        </p>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Credentials section */}
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="card p-8 text-center">
-            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold mb-2">Formación</h3>
-            <p className="text-neutral-600">[Detalle tu formación académica principal]</p>
-          </div>
-
-          <div className="card p-8 text-center">
-            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold mb-2">Especialidad</h3>
-            <p className="text-neutral-600">[Tu especialidad principal]</p>
-          </div>
-
-          <div className="card p-8 text-center">
-            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold mb-2">Publicaciones</h3>
-            <p className="text-neutral-600">[Menciona si tienes publicaciones o investigaciones]</p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
