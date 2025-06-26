@@ -1,6 +1,5 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
 
 const Bio = () => {
   const data = useStaticQuery(graphql`
@@ -22,16 +21,11 @@ const Bio = () => {
     <div className="bg-primary-50 rounded-lg p-6">
       <div className="flex items-start space-x-4">
         <div className="flex-shrink-0">
-          <StaticImage
-            className="rounded-full"
-            layout="fixed"
-            formats={["auto", "webp", "avif"]}
-            src="../images/profile-pic.png"
-            width={64}
-            height={64}
-            quality={95}
-            alt="Foto de perfil"
-          />
+          <div className="w-16 h-16 bg-primary-200 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+            </svg>
+          </div>
         </div>
         <div className="flex-1">
           <h4 className="text-lg font-semibold text-primary-800 mb-2">
