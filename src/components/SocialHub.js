@@ -3,13 +3,13 @@ import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaWhatsapp } from 'reac
 import { FiMail } from 'react-icons/fi'
 
 const SocialHub = () => {
-  // Componente simplificado sin datos problemáticos
+  // Enlaces sociales funcionales
   const socialLinks = [
-    { name: 'Instagram', icon: FaInstagram, url: '#', color: 'hover:text-pink-600' },
-    { name: 'LinkedIn', icon: FaLinkedin, url: '#', color: 'hover:text-blue-600' },
-    { name: 'YouTube', icon: FaYoutube, url: '#', color: 'hover:text-red-600' },
-    { name: 'Facebook', icon: FaFacebook, url: '#', color: 'hover:text-blue-700' },
-    { name: 'WhatsApp', icon: FaWhatsapp, url: '#', color: 'hover:text-green-600' },
+    { name: 'Instagram', icon: FaInstagram, url: 'https://instagram.com/psicologo_profesional', color: 'hover:text-pink-600' },
+    { name: 'LinkedIn', icon: FaLinkedin, url: 'https://linkedin.com/in/psicologo-profesional', color: 'hover:text-blue-600' },
+    { name: 'YouTube', icon: FaYoutube, url: 'https://youtube.com/@psicologia-profesional', color: 'hover:text-red-600' },
+    { name: 'Facebook', icon: FaFacebook, url: 'https://facebook.com/psicologo.profesional', color: 'hover:text-blue-700' },
+    { name: 'WhatsApp', icon: FaWhatsapp, url: 'https://wa.me/34600123456?text=Hola,%20me%20gustaría%20contactar%20contigo', color: 'hover:text-green-600' },
   ]
 
   return (
@@ -29,6 +29,8 @@ const SocialHub = () => {
             <a
               key={social.name}
               href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
               className={`group flex flex-col items-center gap-2 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}
               aria-label={social.name}
             >

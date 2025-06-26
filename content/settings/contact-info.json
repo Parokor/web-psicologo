@@ -1,0 +1,20 @@
+{
+  "name": "Dr. [Tu Nombre]",
+  "title": "Psicólogo Sanitario Colegiado",
+  "phone": "+34 600 123 456",
+  "email": "consulta@psicologo.com",
+  "whatsapp": "34600123456",
+  "address": "Madrid, España",
+  "collegeNumber": "M-12345",
+  "socialMedia": {
+    "instagram": "https://instagram.com/psicologo_profesional",
+    "linkedin": "https://linkedin.com/in/psicologo-profesional",
+    "youtube": "https://youtube.com/@psicologia-profesional",
+    "facebook": "https://facebook.com/psicologo.profesional"
+  },
+  "schedule": {
+    "weekdays": "Lun-Vie: 9:00-20:00",
+    "saturday": "Sáb: 10:00-14:00",
+    "sunday": "Cerrado"
+  }
+}

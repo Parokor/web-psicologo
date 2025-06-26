@@ -35,20 +35,34 @@ const Contact = () => {
   const onSubmit = async (data) => {
     setIsSubmitting(true)
 
-    // Simulación de envío (reemplazar con tu lógica real)
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000))
-
-      toast.success('¡Mensaje enviado con éxito! Te contactaré pronto.', {
-        duration: 5000,
-        icon: '✅',
+      // Envío real usando Netlify Forms
+      const formData = new FormData()
+      formData.append('form-name', 'contact')
+      Object.keys(data).forEach(key => {
+        formData.append(key, data[key])
       })
 
-      setIsSubmitted(true)
-      reset()
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      })
 
-      // Reset después de 5 segundos
-      setTimeout(() => setIsSubmitted(false), 5000)
+      if (response.ok) {
+        toast.success('¡Mensaje enviado con éxito! Te contactaré pronto.', {
+          duration: 5000,
+          icon: '✅',
+        })
+
+        setIsSubmitted(true)
+        reset()
+
+        // Reset después de 5 segundos
+        setTimeout(() => setIsSubmitted(false), 5000)
+      } else {
+        throw new Error('Error en el envío')
+      }
     } catch (error) {
       toast.error('Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.', {
         duration: 5000,
@@ -205,7 +219,15 @@ const Contact = () => {
                       exit={{ opacity: 0 }}
                       onSubmit={handleSubmit(onSubmit)}
                       className="space-y-6"
+                      name="contact"
+                      method="POST"
+                      data-netlify="true"
+                      data-netlify-honeypot="bot-field"
                     >
+                      {/* Hidden Netlify form fields */}
+                      <input type="hidden" name="form-name" value="contact" />
+                      <input type="hidden" name="bot-field" />
+
                       {/* Nombre */}
                       <motion.div
                         initial={{ opacity: 0, x: -20 }}

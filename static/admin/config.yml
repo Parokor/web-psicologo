@@ -1,6 +1,7 @@
 # Configuración del CMS - FUNCIONAL INMEDIATO
 backend:
-  name: test-repo
+  name: git-gateway
+  branch: main
 
 # Carpetas de medios
 media_folder: static/img

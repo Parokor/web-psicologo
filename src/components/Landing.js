@@ -180,7 +180,10 @@ const Landing = () => {
               variants={fadeInUp}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
             >
-              <motion.button
+              <motion.a
+                href="https://wa.me/34600123456?text=Hola,%20me%20gustaría%20reservar%20una%20primera%20consulta"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-primary-400 to-primary-600 rounded-full shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -196,16 +199,19 @@ const Landing = () => {
                   whileHover={{ x: '200%' }}
                   transition={{ duration: 0.7 }}
                 />
-              </motion.button>
+              </motion.a>
 
-              <motion.button
+              <motion.a
+                href="https://wa.me/34600123456?text=Hola,%20me%20gustaría%20obtener%20más%20información%20sobre%20tus%20servicios"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-primary-600 bg-white border-2 border-primary-400 rounded-full hover:bg-primary-50 hover:border-primary-500 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <FiMessageCircle className="mr-2" />
                 Contactar por WhatsApp
-              </motion.button>
+              </motion.a>
             </motion.div>
 
             {/* Estadísticas */}
