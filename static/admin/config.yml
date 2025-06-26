@@ -1,7 +1,10 @@
-# Configuración del CMS
+# Configuración del CMS con GitHub
 backend:
-  name: git-gateway
+  name: github
+  repo: Parokor/web-psicologo
   branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
 
 # Configuración local para desarrollo
 local_backend: true
@@ -11,15 +14,45 @@ media_folder: static/img
 public_folder: /img
 
 # Configuración del sitio
-site_url: https://685d4b5ba61fcd000898b8ff--psicologiaberta.netlify.app
-display_url: https://685d4b5ba61fcd000898b8ff--psicologiaberta.netlify.app
-
-# Idioma
 locale: 'es'
 
 # Colecciones
 collections:
-  # Blog
+  # CONFIGURACIÓN PERSONAL
+  - name: "configuracion"
+    label: "⚙️ Configuración del Sitio"
+    files:
+      - name: "general"
+        label: "Información General"
+        file: "content/settings/general.json"
+        fields:
+          - {label: "Nombre Completo", name: "name", widget: "string"}
+          - {label: "Título Profesional", name: "title", widget: "string"}
+          - {label: "Teléfono", name: "phone", widget: "string"}
+          - {label: "Email", name: "email", widget: "string"}
+          - {label: "Dirección", name: "address", widget: "text"}
+
+      - name: "social"
+        label: "Redes Sociales"
+        file: "content/settings/social.json"
+        fields:
+          - {label: "Instagram", name: "instagram", widget: "string", required: false}
+          - {label: "LinkedIn", name: "linkedin", widget: "string", required: false}
+          - {label: "WhatsApp", name: "whatsapp", widget: "string", required: false}
+
+  # PÁGINA ABOUT
+  - name: "pages"
+    label: "📄 Páginas"
+    files:
+      - name: "about"
+        label: "Sobre Mí"
+        file: "content/pages/about.md"
+        fields:
+          - {label: "Título", name: "title", widget: "string"}
+          - {label: "Foto", name: "image", widget: "image", required: false}
+          - {label: "Contenido", name: "body", widget: "markdown"}
+
+  # BLOG
   - name: "blog"
     label: "📝 Blog"
     folder: "content/blog"
@@ -29,37 +62,18 @@ collections:
       - {label: "Título", name: "title", widget: "string"}
       - {label: "Fecha", name: "date", widget: "datetime"}
       - {label: "Descripción", name: "description", widget: "text"}
-      - {label: "Imagen destacada", name: "image", widget: "image", required: false}
-      - {label: "Categorías", name: "categories", widget: "list", required: false}
+      - {label: "Imagen", name: "image", widget: "image", required: false}
+      - {label: "Categorías", name: "categories", widget: "list", default: ["General"]}
       - {label: "Contenido", name: "body", widget: "markdown"}
 
-  # Páginas
-  - name: "pages"
-    label: "📄 Páginas"
-    files:
-      - file: "content/pages/about.md"
-        label: "Acerca de"
-        name: "about"
-        fields:
-          - {label: "Título", name: "title", widget: "string"}
-          - {label: "Contenido", name: "body", widget: "markdown"}
-
-      - file: "content/pages/services.md"
-        label: "Servicios"
-        name: "services"
-        fields:
-          - {label: "Título", name: "title", widget: "string"}
-          - {label: "Contenido", name: "body", widget: "markdown"}
-
-  # Configuración
-  - name: "settings"
-    label: "⚙️ Configuración"
-    files:
-      - file: "content/settings/general.json"
-        label: "General"
-        name: "general"
-        fields:
-          - {label: "Nombre del sitio", name: "siteName", widget: "string"}
-          - {label: "Descripción", name: "siteDescription", widget: "text"}
-          - {label: "Email", name: "email", widget: "string"}
-          - {label: "Teléfono", name: "phone", widget: "string"}
+  # SERVICIOS
+  - name: "services"
+    label: "💼 Servicios"
+    folder: "content/services"
+    create: true
+    fields:
+      - {label: "Nombre", name: "title", widget: "string"}
+      - {label: "Descripción", name: "description", widget: "text"}
+      - {label: "Precio", name: "price", widget: "string"}
+      - {label: "Duración", name: "duration", widget: "string"}
+      - {label: "Contenido", name: "body", widget: "markdown"}

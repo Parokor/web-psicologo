@@ -6,27 +6,7 @@ import "@fontsource/merriweather" // Serif font for blog content
 // Tailwind CSS
 import './src/styles/global.css'
 
-// Netlify Identity Widget
-if (typeof window !== 'undefined') {
-  // Load Netlify Identity Widget
-  const script = document.createElement('script')
-  script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js'
-  script.async = true
-  document.body.appendChild(script)
-
-  // Handle login redirect
-  script.onload = () => {
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', user => {
-        if (!user) {
-          window.netlifyIdentity.on('login', () => {
-            document.location.href = '/admin/'
-          })
-        }
-      })
-    }
-  }
-}
+// GitHub OAuth for CMS - No Netlify Identity needed
 
 // Importaciones para animaciones
 // import React from 'react'
