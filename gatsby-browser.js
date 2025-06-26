@@ -1,4 +1,9 @@
-// Emergency minimal imports
+// Custom typefaces
+import "@fontsource-variable/montserrat" // Main display font
+import "@fontsource-variable/inter" // Main sans-serif font
+import "@fontsource/merriweather" // Serif font for blog content
+
+// Tailwind CSS
 import './src/styles/global.css'
 
 // Importaciones para animaciones
