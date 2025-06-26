@@ -6,6 +6,10 @@ module.exports = {
     title: `Psicología Profesional`,
     description: `Sitio web profesional para servicios de psicología`,
     siteUrl: `https://web-psicologo.netlify.app`,
+    author: {
+      name: `Dr. Psicólogo`,
+      summary: `Psicólogo clínico especializado en terapia cognitivo-conductual y terapia de pareja. Comprometido con el bienestar emocional y el crecimiento personal de mis pacientes.`,
+    },
   },
   plugins: [
     `gatsby-plugin-postcss`,
