@@ -16,11 +16,13 @@ import {
 import { FaWhatsapp } from 'react-icons/fa'
 import toast from 'react-hot-toast'
 import Tilt from 'react-parallax-tilt'
+import useContactInfo from '../hooks/useContactInfo'
 
 const Contact = () => {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const { contactInfo: dynamicContactInfo, getConsultationWhatsAppURL } = useContactInfo()
 
   const {
     register,
@@ -74,9 +76,9 @@ const Contact = () => {
   }
 
   const contactInfo = [
-    { icon: FiPhone, label: 'Teléfono', value: '+34 600 123 456', link: 'tel:+34600123456' },
-    { icon: FiMail, label: 'Email', value: 'consulta@psicologo.com', link: 'mailto:consulta@psicologo.com' },
-    { icon: FiMapPin, label: 'Ubicación', value: 'Madrid, España', link: '#' },
+    { icon: FiPhone, label: 'Teléfono', value: dynamicContactInfo.phone, link: `tel:${dynamicContactInfo.phone.replace(/\s/g, '')}` },
+    { icon: FiMail, label: 'Email', value: dynamicContactInfo.email, link: `mailto:${dynamicContactInfo.email}` },
+    { icon: FiMapPin, label: 'Ubicación', value: dynamicContactInfo.address, link: '#' },
     { icon: FiClock, label: 'Horario', value: 'Lun-Vie: 9:00-20:00', link: '#' },
   ]
 
@@ -503,7 +505,7 @@ const Contact = () => {
 
       {/* Botón flotante de WhatsApp */}
       <motion.a
-        href="https://wa.me/34600123456?text=Hola,%20me%20gustaría%20agendar%20una%20consulta"
+        href={getConsultationWhatsAppURL()}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-8 right-8 z-50 group"

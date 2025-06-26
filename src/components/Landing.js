@@ -5,12 +5,14 @@ import { FiArrowRight, FiCalendar, FiMessageCircle, FiUsers, FiHeart } from 'rea
 import CountUp from 'react-countup'
 import { useInView } from 'react-intersection-observer'
 import Tilt from 'react-parallax-tilt'
+import useContactInfo from '../hooks/useContactInfo'
 
 const Landing = () => {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true })
   const { scrollY } = useScroll()
   const y = useTransform(scrollY, [0, 500], [0, 150])
   const opacity = useTransform(scrollY, [0, 300], [1, 0])
+  const { getBookingWhatsAppURL, getInfoWhatsAppURL } = useContactInfo()
 
   // Partículas flotantes animadas
   const particles = Array.from({ length: 25 }, (_, i) => ({
@@ -181,7 +183,7 @@ const Landing = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
             >
               <motion.a
-                href="https://wa.me/34600123456?text=Hola,%20me%20gustaría%20reservar%20una%20primera%20consulta"
+                href={getBookingWhatsAppURL()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-primary-400 to-primary-600 rounded-full shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105"
@@ -202,7 +204,7 @@ const Landing = () => {
               </motion.a>
 
               <motion.a
-                href="https://wa.me/34600123456?text=Hola,%20me%20gustaría%20obtener%20más%20información%20sobre%20tus%20servicios"
+                href={getInfoWhatsAppURL()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-primary-600 bg-white border-2 border-primary-400 rounded-full hover:bg-primary-50 hover:border-primary-500 transition-all duration-300"

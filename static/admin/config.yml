@@ -1,4 +1,4 @@
-# Configuración del CMS - FUNCIONAL INMEDIATO
+# Configuración del CMS - FUNCIONAL COMPLETO
 backend:
   name: git-gateway
   branch: main
@@ -10,24 +10,61 @@ public_folder: /img
 # Configuración del sitio
 locale: 'es'
 
-# Colecciones - FUNCIONALES INMEDIATO
+# Colecciones - FUNCIONALES COMPLETO
 collections:
+  # INFORMACIÓN PERSONAL Y CONTACTO
+  - name: "settings"
+    label: "⚙️ Configuración del Sitio"
+    files:
+      - name: "contact"
+        label: "Información de Contacto"
+        file: "content/settings/contact-info.json"
+        fields:
+          - {label: "Nombre Completo", name: "name", widget: "string"}
+          - {label: "Título Profesional", name: "title", widget: "string"}
+          - {label: "Teléfono", name: "phone", widget: "string"}
+          - {label: "Email", name: "email", widget: "string"}
+          - {label: "WhatsApp (solo números)", name: "whatsapp", widget: "string"}
+          - {label: "Dirección", name: "address", widget: "string"}
+          - {label: "Número de Colegiado", name: "collegeNumber", widget: "string"}
+          - label: "Redes Sociales"
+            name: "socialMedia"
+            widget: "object"
+            fields:
+              - {label: "Instagram URL", name: "instagram", widget: "string"}
+              - {label: "LinkedIn URL", name: "linkedin", widget: "string"}
+              - {label: "YouTube URL", name: "youtube", widget: "string"}
+              - {label: "Facebook URL", name: "facebook", widget: "string"}
+
+  # BLOG
   - name: "blog"
-    label: "📝 Artículos"
+    label: "📝 Artículos del Blog"
     folder: "content/blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - {label: "Título", name: "title", widget: "string"}
       - {label: "Fecha", name: "date", widget: "datetime"}
+      - {label: "Descripción", name: "description", widget: "text"}
+      - {label: "Imagen destacada", name: "image", widget: "image", required: false}
+      - {label: "Categorías", name: "categories", widget: "list", default: ["General"]}
       - {label: "Contenido", name: "body", widget: "markdown"}
 
+  # PÁGINAS
   - name: "pages"
-    label: "📄 Páginas"
+    label: "📄 Páginas del Sitio"
     files:
       - name: "about"
         label: "Sobre Mí"
         file: "content/pages/about.md"
+        fields:
+          - {label: "Título", name: "title", widget: "string"}
+          - {label: "Imagen de perfil", name: "image", widget: "image", required: false}
+          - {label: "Contenido", name: "body", widget: "markdown"}
+
+      - name: "services"
+        label: "Servicios"
+        file: "content/pages/services.md"
         fields:
           - {label: "Título", name: "title", widget: "string"}
           - {label: "Contenido", name: "body", widget: "markdown"}

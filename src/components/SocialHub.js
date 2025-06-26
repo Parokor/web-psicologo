@@ -1,15 +1,18 @@
 import React from 'react'
 import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaWhatsapp } from 'react-icons/fa'
 import { FiMail } from 'react-icons/fi'
+import useContactInfo from '../hooks/useContactInfo'
 
 const SocialHub = () => {
-  // Enlaces sociales funcionales
+  const { contactInfo, getWhatsAppURL } = useContactInfo()
+
+  // Enlaces sociales funcionales con datos dinámicos
   const socialLinks = [
-    { name: 'Instagram', icon: FaInstagram, url: 'https://instagram.com/psicologo_profesional', color: 'hover:text-pink-600' },
-    { name: 'LinkedIn', icon: FaLinkedin, url: 'https://linkedin.com/in/psicologo-profesional', color: 'hover:text-blue-600' },
-    { name: 'YouTube', icon: FaYoutube, url: 'https://youtube.com/@psicologia-profesional', color: 'hover:text-red-600' },
-    { name: 'Facebook', icon: FaFacebook, url: 'https://facebook.com/psicologo.profesional', color: 'hover:text-blue-700' },
-    { name: 'WhatsApp', icon: FaWhatsapp, url: 'https://wa.me/34600123456?text=Hola,%20me%20gustaría%20contactar%20contigo', color: 'hover:text-green-600' },
+    { name: 'Instagram', icon: FaInstagram, url: contactInfo.socialMedia.instagram, color: 'hover:text-pink-600' },
+    { name: 'LinkedIn', icon: FaLinkedin, url: contactInfo.socialMedia.linkedin, color: 'hover:text-blue-600' },
+    { name: 'YouTube', icon: FaYoutube, url: contactInfo.socialMedia.youtube, color: 'hover:text-red-600' },
+    { name: 'Facebook', icon: FaFacebook, url: contactInfo.socialMedia.facebook, color: 'hover:text-blue-700' },
+    { name: 'WhatsApp', icon: FaWhatsapp, url: getWhatsAppURL("Hola, me gustaría contactar contigo"), color: 'hover:text-green-600' },
   ]
 
   return (
@@ -49,7 +52,7 @@ const SocialHub = () => {
             Envíame un mensaje y te responderé en menos de 24 horas
           </p>
           <a
-            href="mailto:consulta@psicologo.com"
+            href={`mailto:${contactInfo.email}`}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             Enviar Email
