@@ -17,7 +17,6 @@
     "@fontsource-variable/montserrat": "^5.0.17",
     "@fontsource-variable/inter": "^5.2.5",
     "@fontsource/merriweather": "^5.0.8",
-    "@tailwindcss/postcss": "^4.1.10",
     "@tailwindcss/typography": "^0.5.15",
     "gatsby": "^5.14.1",
     "gatsby-adapter-netlify": "^1.0.4",
