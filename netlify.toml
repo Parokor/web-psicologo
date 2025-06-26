@@ -1,6 +1,6 @@
 [build]
   publish = "public"
-  command = "npm ci --legacy-peer-deps && npm run build"
+  command = "rm -rf node_modules package-lock.json && npm install --legacy-peer-deps --force && npm run build"
 
 [build.environment]
   NODE_ENV = "production"
