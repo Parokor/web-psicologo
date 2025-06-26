@@ -1,13 +1,6 @@
-# Configuración del CMS con GitHub
+# Configuración del CMS - FUNCIONAL INMEDIATO
 backend:
-  name: github
-  repo: Parokor/web-psicologo
-  branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
-
-# Configuración local para desarrollo
-local_backend: true
+  name: test-repo
 
 # Carpetas de medios
 media_folder: static/img
@@ -16,31 +9,18 @@ public_folder: /img
 # Configuración del sitio
 locale: 'es'
 
-# Colecciones
+# Colecciones - FUNCIONALES INMEDIATO
 collections:
-  # CONFIGURACIÓN PERSONAL
-  - name: "configuracion"
-    label: "⚙️ Configuración del Sitio"
-    files:
-      - name: "general"
-        label: "Información General"
-        file: "content/settings/general.json"
-        fields:
-          - {label: "Nombre Completo", name: "name", widget: "string"}
-          - {label: "Título Profesional", name: "title", widget: "string"}
-          - {label: "Teléfono", name: "phone", widget: "string"}
-          - {label: "Email", name: "email", widget: "string"}
-          - {label: "Dirección", name: "address", widget: "text"}
+  - name: "blog"
+    label: "📝 Artículos"
+    folder: "content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Fecha", name: "date", widget: "datetime"}
+      - {label: "Contenido", name: "body", widget: "markdown"}
 
-      - name: "social"
-        label: "Redes Sociales"
-        file: "content/settings/social.json"
-        fields:
-          - {label: "Instagram", name: "instagram", widget: "string", required: false}
-          - {label: "LinkedIn", name: "linkedin", widget: "string", required: false}
-          - {label: "WhatsApp", name: "whatsapp", widget: "string", required: false}
-
-  # PÁGINA ABOUT
   - name: "pages"
     label: "📄 Páginas"
     files:
@@ -49,31 +29,4 @@ collections:
         file: "content/pages/about.md"
         fields:
           - {label: "Título", name: "title", widget: "string"}
-          - {label: "Foto", name: "image", widget: "image", required: false}
           - {label: "Contenido", name: "body", widget: "markdown"}
-
-  # BLOG
-  - name: "blog"
-    label: "📝 Blog"
-    folder: "content/blog"
-    create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    fields:
-      - {label: "Título", name: "title", widget: "string"}
-      - {label: "Fecha", name: "date", widget: "datetime"}
-      - {label: "Descripción", name: "description", widget: "text"}
-      - {label: "Imagen", name: "image", widget: "image", required: false}
-      - {label: "Categorías", name: "categories", widget: "list", default: ["General"]}
-      - {label: "Contenido", name: "body", widget: "markdown"}
-
-  # SERVICIOS
-  - name: "services"
-    label: "💼 Servicios"
-    folder: "content/services"
-    create: true
-    fields:
-      - {label: "Nombre", name: "title", widget: "string"}
-      - {label: "Descripción", name: "description", widget: "text"}
-      - {label: "Precio", name: "price", widget: "string"}
-      - {label: "Duración", name: "duration", widget: "string"}
-      - {label: "Contenido", name: "body", widget: "markdown"}

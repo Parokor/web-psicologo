@@ -10,16 +10,8 @@
   <!-- Include the script that builds the page and powers Decap CMS -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   <script>
-    // Configuración para GitHub
-    CMS.init({
-      config: {
-        backend: {
-          name: 'github',
-          repo: 'Parokor/web-psicologo',
-          branch: 'main'
-        }
-      }
-    });
+    // Inicializar CMS con configuración automática
+    CMS.init();
   </script>
 </body>
 </html>
