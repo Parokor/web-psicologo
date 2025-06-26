@@ -22,7 +22,7 @@ export const useContactInfo = () => {
     // Intentar cargar información de contacto desde el archivo JSON
     const loadContactInfo = async () => {
       try {
-        const response = await fetch('/content/settings/contact-info.json')
+        const response = await fetch('/contact-info.json')
         if (response.ok) {
           const data = await response.json()
           setContactInfo(data)
