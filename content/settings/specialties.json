@@ -1,0 +1,28 @@
+{
+  "specialties": [
+    {
+      "name": "Ansiedad y Estrés",
+      "description": "Tratamiento especializado para trastornos de ansiedad",
+      "icon": "brain",
+      "order": 1
+    },
+    {
+      "name": "Terapia de Pareja",
+      "description": "Mejora de la comunicación y resolución de conflictos",
+      "icon": "heart",
+      "order": 2
+    },
+    {
+      "name": "Desarrollo Personal",
+      "description": "Crecimiento personal y autoestima",
+      "icon": "users",
+      "order": 3
+    },
+    {
+      "name": "Psicología Infantil",
+      "description": "Apoyo especializado para niños y adolescentes",
+      "icon": "child",
+      "order": 4
+    }
+  ]
+}

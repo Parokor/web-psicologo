@@ -1,0 +1,13 @@
+{
+  "name": "Dr. [Tu Nombre]",
+  "title": "Psicólogo Clínico",
+  "license": "M-00000",
+  "phone": "+34 600 000 000",
+  "email": "consulta@tupsicologo.com",
+  "address": "Calle Principal 123, Madrid",
+  "schedule": {
+    "weekdays": "9:00 - 20:00",
+    "saturday": "10:00 - 14:00",
+    "sunday": "Cerrado"
+  }
+}
