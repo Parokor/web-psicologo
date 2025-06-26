@@ -5,11 +5,15 @@ var plugins = [{
     },{
       name: 'gatsby-plugin-feed',
       plugin: require('/Users/iker/Documents/Pepita/web-psicologia/web-psicologo.worktrees/fix/deployment-styling-issues/node_modules/gatsby-plugin-feed/gatsby-ssr.js'),
-      options: {"plugins":[],"query":"\n          {\n            site {\n              siteMetadata {\n                title\n                description\n                siteUrl\n                site_url: siteUrl\n              }\n            }\n          }\n        ","feeds":[{"query":"{\n              allMarkdownRemark(sort: {frontmatter: {date: DESC}}) {\n                nodes {\n                  excerpt\n                  html\n                  fields {\n                    slug\n                  }\n                  frontmatter {\n                    title\n                    date\n                  }\n                }\n              }\n            }","output":"/rss.xml","title":"RSS Feed"}]},
+      options: {"plugins":[],"query":"\n          {\n            site {\n              siteMetadata {\n                title\n                description\n                siteUrl\n                site_url: siteUrl\n              }\n            }\n          }\n        ","feeds":[{"query":"{\n              allMarkdownRemark(sort: {frontmatter: {date: DESC}}) {\n                nodes {\n                  excerpt\n                  html\n                  fields {\n                    slug\n                  }\n                  frontmatter {\n                    title\n                    date\n                  }\n                }\n              }\n            }","output":"/rss.xml","title":"Psicología Profesional RSS Feed"}]},
     },{
       name: 'gatsby-plugin-manifest',
       plugin: require('/Users/iker/Documents/Pepita/web-psicologia/web-psicologo.worktrees/fix/deployment-styling-issues/node_modules/gatsby-plugin-manifest/gatsby-ssr.js'),
-      options: {"plugins":[],"name":"Dr. [Nombre del Psicólogo]","short_name":"Psicólogo","start_url":"/","background_color":"#ffffff","theme_color":"#663399","display":"minimal-ui","icon":"src/images/gatsby-icon.png","legacy":true,"theme_color_in_head":true,"cache_busting_mode":"query","crossOrigin":"anonymous","include_favicon":true,"cacheDigest":"4a9773549091c227cd2eb82ccd9c5e3a"},
+      options: {"plugins":[],"name":"Psicología Profesional","short_name":"PsiPro","start_url":"/","background_color":"#0ca4b8","theme_color":"#0ca4b8","display":"minimal-ui","icon":"src/images/gatsby-icon.png","legacy":true,"theme_color_in_head":true,"cache_busting_mode":"query","crossOrigin":"anonymous","include_favicon":true,"cacheDigest":"4a9773549091c227cd2eb82ccd9c5e3a"},
+    },{
+      name: 'gatsby-plugin-react-helmet',
+      plugin: require('/Users/iker/Documents/Pepita/web-psicologia/web-psicologo.worktrees/fix/deployment-styling-issues/node_modules/gatsby-plugin-react-helmet/gatsby-ssr.js'),
+      options: {"plugins":[]},
     },{
       name: 'default-site-plugin',
       plugin: require('/Users/iker/Documents/Pepita/web-psicologia/web-psicologo.worktrees/fix/deployment-styling-issues/gatsby-ssr.js'),

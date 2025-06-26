@@ -1,4 +1,4 @@
-### Type definitions saved at 2025-06-26T13:01:16.283Z ###
+### Type definitions saved at 2025-06-26T15:11:03.174Z ###
 
 enum RemoteFileFit {
   COVER
@@ -266,13 +266,12 @@ type Site implements Node @dontInfer {
   graphqlTypegen: Boolean
 }
 
-type SiteSiteMetadata @derivedTypes {
+type SiteSiteMetadata {
   title: String
   description: String
   author: Author
   siteUrl: String
   social: Social
-  services: SiteSiteMetadataServices
 }
 
 type SiteFunction implements Node @dontInfer {
@@ -674,16 +673,11 @@ type MarkdownRemark implements Node @childOf(mimeTypes: ["text/markdown", "text/
 type Author {
   name: String
   summary: String
-  email: String
-  phone: String
-  location: String
 }
 
 type Social {
   twitter: String
   instagram: String
-  linkedin: String
-  facebook: String
 }
 
 type Frontmatter {
@@ -702,266 +696,4 @@ type Frontmatter {
 
 type Fields {
   slug: String
-}
-
-type SettingsJson implements Node @derivedTypes @childOf(types: ["File"]) @dontInfer {
-  contactInfo: SettingsJsonContactInfo
-  officeHours: SettingsJsonOfficeHours
-  appointmentTypes: [SettingsJsonAppointmentTypes]
-  emergencyContact: SettingsJsonEmergencyContact
-  formSettings: SettingsJsonFormSettings
-  platforms: [SettingsJsonPlatforms]
-  settings: SettingsJsonSettings
-  title: String
-  description: String
-  siteUrl: String
-  logo: String
-  colorScheme: String
-  author: SettingsJsonAuthor
-  contact: SettingsJsonContact
-  services: [SettingsJsonServices]
-  seo: SettingsJsonSeo
-  features: SettingsJsonFeatures
-  certifications: SettingsJsonCertifications
-}
-
-type DataJson implements Node @derivedTypes @childOf(types: ["File"]) @dontInfer {
-  testimonials: [DataJsonTestimonials]
-  statistics: DataJsonStatistics
-  settings: DataJsonSettings
-}
-
-type SiteSiteMetadataServices {
-  individual: Boolean
-  couple: Boolean
-  family: Boolean
-  online: Boolean
-}
-
-type SettingsJsonContactInfo @derivedTypes {
-  phone: SettingsJsonContactInfoPhone
-  email: SettingsJsonContactInfoEmail
-  address: SettingsJsonContactInfoAddress
-}
-
-type SettingsJsonContactInfoPhone {
-  number: String
-  display: String
-  whatsapp: Boolean
-  available: String
-}
-
-type SettingsJsonContactInfoEmail {
-  primary: String
-  appointments: String
-  emergency: String
-}
-
-type SettingsJsonContactInfoAddress @derivedTypes {
-  street: String
-  city: String
-  postalCode: String
-  province: String
-  country: String
-  coordinates: SettingsJsonContactInfoAddressCoordinates
-}
-
-type SettingsJsonContactInfoAddressCoordinates {
-  lat: Float
-  lng: Float
-}
-
-type SettingsJsonOfficeHours @derivedTypes {
-  monday: SettingsJsonOfficeHoursMonday
-  tuesday: SettingsJsonOfficeHoursTuesday
-  wednesday: SettingsJsonOfficeHoursWednesday
-  thursday: SettingsJsonOfficeHoursThursday
-  friday: SettingsJsonOfficeHoursFriday
-  saturday: SettingsJsonOfficeHoursSaturday
-  sunday: SettingsJsonOfficeHoursSunday
-}
-
-type SettingsJsonOfficeHoursMonday {
-  open: String
-  close: String
-  available: Boolean
-}
-
-type SettingsJsonOfficeHoursTuesday {
-  open: String
-  close: String
-  available: Boolean
-}
-
-type SettingsJsonOfficeHoursWednesday {
-  open: String
-  close: String
-  available: Boolean
-}
-
-type SettingsJsonOfficeHoursThursday {
-  open: String
-  close: String
-  available: Boolean
-}
-
-type SettingsJsonOfficeHoursFriday {
-  open: String
-  close: String
-  available: Boolean
-}
-
-type SettingsJsonOfficeHoursSaturday {
-  available: Boolean
-}
-
-type SettingsJsonOfficeHoursSunday {
-  available: Boolean
-}
-
-type SettingsJsonAppointmentTypes {
-  type: String
-  name: String
-  duration: Int
-  price: String
-  available: Boolean
-}
-
-type SettingsJsonEmergencyContact {
-  available: Boolean
-  phone: String
-  hours: String
-  note: String
-}
-
-type SettingsJsonFormSettings @derivedTypes {
-  enableCaptcha: Boolean
-  requiredFields: [String]
-  autoReply: SettingsJsonFormSettingsAutoReply
-}
-
-type SettingsJsonFormSettingsAutoReply {
-  enabled: Boolean
-  subject: String
-  message: String
-}
-
-type SettingsJsonPlatforms {
-  name: String
-  url: String
-  username: String
-  description: String
-  active: Boolean
-  icon: String
-}
-
-type SettingsJsonSettings {
-  showInHeader: Boolean
-  showInFooter: Boolean
-  openInNewTab: Boolean
-  displayStyle: String
-}
-
-type SettingsJsonAuthor {
-  name: String
-  title: String
-  collegeNumber: String
-  specialization: String
-  experience: String
-  bio: String
-  image: String
-  philosophy: String
-  uniqueValue: [String]
-}
-
-type SettingsJsonContact @derivedTypes {
-  phone: String
-  email: String
-  address: SettingsJsonContactAddress
-  mapsUrl: String
-  hours: SettingsJsonContactHours
-  consultationModes: [String]
-  responseTime: String
-}
-
-type SettingsJsonContactAddress {
-  street: String
-  city: String
-  postalCode: String
-  country: String
-}
-
-type SettingsJsonContactHours {
-  weekdays: String
-  saturday: String
-  sunday: String
-}
-
-type SettingsJsonServices {
-  name: String
-  icon: String
-  description: String
-  price: Int
-  duration: Int
-  modality: [String]
-  active: Boolean
-  featured: Boolean
-}
-
-type SettingsJsonSeo {
-  keywords: [String]
-  defaultImage: String
-}
-
-type SettingsJsonFeatures {
-  onlineTherapy: Boolean
-  inPersonTherapy: Boolean
-  emergencySupport: Boolean
-  groupTherapy: Boolean
-  workshopsAvailable: Boolean
-  insuranceAccepted: [String]
-  languages: [String]
-  paymentMethods: [String]
-}
-
-type SettingsJsonCertifications {
-  collegeNumber: String
-  mainDegree: String
-  specializations: [String]
-  continuousEducation: [String]
-}
-
-type DataJsonTestimonials {
-  id: Int
-  name: String
-  age: Int
-  location: String
-  rating: Int
-  date: Date @dateformat
-  treatment: String
-  testimonial: String
-  featured: Boolean
-  verified: Boolean
-}
-
-type DataJsonStatistics @derivedTypes {
-  totalTestimonials: Int
-  averageRating: Int
-  satisfactionRate: Int
-  treatmentTypes: DataJsonStatisticsTreatmentTypes
-}
-
-type DataJsonStatisticsTreatmentTypes {
-  individual: Int
-  couple: Int
-  online: Int
-}
-
-type DataJsonSettings {
-  displayOnHomepage: Boolean
-  maxDisplayed: Int
-  showRatings: Boolean
-  showLocation: Boolean
-  anonymizeNames: Boolean
-  requireVerification: Boolean
 }
