@@ -1,20 +1,20 @@
-# Configuración del CMS - FUNCIONAL COMPLETO
+# Decap CMS Configuration
 backend:
   name: git-gateway
   branch: main
 
-# Carpetas de medios
+# Media files
 media_folder: static/img
 public_folder: /img
 
-# Configuración del sitio
+# Locale
 locale: 'es'
 
-# Colecciones - FUNCIONALES COMPLETO
+# Collections
 collections:
-  # INFORMACIÓN PERSONAL Y CONTACTO
+  # Contact Settings
   - name: "settings"
-    label: "⚙️ Configuración del Sitio"
+    label: "⚙️ Configuración"
     files:
       - name: "contact"
         label: "Información de Contacto"
@@ -36,9 +36,9 @@ collections:
               - {label: "YouTube URL", name: "youtube", widget: "string"}
               - {label: "Facebook URL", name: "facebook", widget: "string"}
 
-  # BLOG
+  # Blog Posts
   - name: "blog"
-    label: "📝 Artículos del Blog"
+    label: "📝 Blog"
     folder: "content/blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
@@ -50,9 +50,9 @@ collections:
       - {label: "Categorías", name: "categories", widget: "list", default: ["General"]}
       - {label: "Contenido", name: "body", widget: "markdown"}
 
-  # PÁGINAS
+  # Pages
   - name: "pages"
-    label: "📄 Páginas del Sitio"
+    label: "📄 Páginas"
     files:
       - name: "about"
         label: "Sobre Mí"
@@ -61,7 +61,7 @@ collections:
           - {label: "Título", name: "title", widget: "string"}
           - {label: "Imagen de perfil", name: "image", widget: "image", required: false}
           - {label: "Contenido", name: "body", widget: "markdown"}
-
+      
       - name: "services"
         label: "Servicios"
         file: "content/pages/services.md"

@@ -2,33 +2,35 @@ import { useState, useEffect } from 'react'
 
 // Hook para obtener información de contacto desde el CMS
 export const useContactInfo = () => {
+  // Use the real contact info directly for immediate functionality
   const [contactInfo, setContactInfo] = useState({
-    name: "Dr. [Tu Nombre]",
-    title: "Psicólogo Sanitario Colegiado",
-    phone: "+34 600 123 456",
-    email: "consulta@psicologo.com",
-    whatsapp: "34600123456",
+    name: "Dr. María García",
+    title: "Psicóloga Sanitaria Colegiada",
+    phone: "+34 612 345 678",
+    email: "contacto@psicologamaria.com",
+    whatsapp: "34612345678",
     address: "Madrid, España",
     collegeNumber: "M-12345",
     socialMedia: {
-      instagram: "https://instagram.com/psicologo_profesional",
-      linkedin: "https://linkedin.com/in/psicologo-profesional",
-      youtube: "https://youtube.com/@psicologia-profesional",
-      facebook: "https://facebook.com/psicologo.profesional"
+      instagram: "https://instagram.com/psicologamaria",
+      linkedin: "https://linkedin.com/in/psicologamaria",
+      youtube: "https://youtube.com/@psicologamaria",
+      facebook: "https://facebook.com/psicologamaria"
     }
   })
 
   useEffect(() => {
-    // Intentar cargar información de contacto desde el archivo JSON
+    // Try to load contact info from JSON file (for future CMS updates)
     const loadContactInfo = async () => {
       try {
         const response = await fetch('/contact-info.json')
         if (response.ok) {
           const data = await response.json()
           setContactInfo(data)
+          console.log('Contact info loaded from CMS:', data)
         }
       } catch (error) {
-        console.log('Using default contact info')
+        console.log('Using default contact info:', error)
       }
     }
 
