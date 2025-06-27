@@ -1,6 +1,6 @@
 [build]
   publish = "public"
-  command = "rm -rf node_modules package-lock.json .cache && npm install --legacy-peer-deps --force && npm run build"
+  command = "rm -rf node_modules package-lock.json .cache && npm install --legacy-peer-deps --force && npm run build && cp -r static/admin public/"
 
 [build.environment]
   NODE_ENV = "production"
@@ -25,7 +25,9 @@
   to = "/admin/"
   status = 301
 
+# SPA redirects - exclude admin paths
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  conditions = {Path = ["!admin/*"]}
