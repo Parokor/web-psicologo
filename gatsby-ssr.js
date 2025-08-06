@@ -1,22 +1,37 @@
 /**
- * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/
+ * Gatsby SSR APIs
+ * Docs: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/
  */
 
 const React = require("react")
 
-/**
- * @type {import('gatsby').GatsbySSR['onRenderBody']}
- */
 exports.onRenderBody = ({ setHtmlAttributes, setHeadComponents }) => {
   setHtmlAttributes({ lang: `es` })
-  
-  // Add Netlify Identity widget script
+
+  // Netlify Identity widget
   setHeadComponents([
-    React.createElement("script", {
-      key: "netlify-identity-widget",
-      src: "https://identity.netlify.com/v1/netlify-identity-widget.js",
-    }),
+    <script
+      key="netlify-identity-widget"
+      src="https://identity.netlify.com/v1/netlify-identity-widget.js"
+    />,
   ])
+}
+
+/**
+ * Evitar que react-hot-toast se ejecute en el lado del servidor.
+ * Gatsby llama esta API SOLAMENTE en build-html.
+ */
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /react-hot-toast/,
+            use: loaders.null(), // lo reemplaza por un módulo vacío
+          },
+        ],
+      },
+    })
+  }
 }
