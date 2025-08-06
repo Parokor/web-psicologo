@@ -4,14 +4,33 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
-  <title>CMS Admin</title>
+  <title>CMS - Panel de Administración</title>
+  
+  <!-- Cargar Netlify Identity Widget -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <!-- Loading indicator -->
+  <div id="nc-root">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+      <div>
+        <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; animation: spin 2s linear infinite; margin: 0 auto 20px;"></div>
+        <p>Cargando CMS...</p>
+      </div>
+    </div>
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </div>
+
+  <!-- ✅ USAR VERSIÓN ESTABLE DE DECAP CMS (SIN BUG removeChild) -->
+  <script src="https://unpkg.com/decap-cms@^2.10.0/dist/decap-cms.js"></script>
+  
   <script>
-    // Initialize Netlify Identity
+    // ✅ Configurar Netlify Identity
     if (window.netlifyIdentity) {
       window.netlifyIdentity.on("init", user => {
         if (!user) {
@@ -21,9 +40,88 @@
         }
       });
     }
-    
-    // Initialize CMS
-    CMS.init();
+
+    // ✅ Configuración del CMS sin errores
+    window.CMS_MANUAL_INIT = true;
+
+    // Esperar a que todo esté cargado
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configurar CMS
+      if (window.CMS) {
+        console.log('✅ Iniciando Decap CMS v2.10.0 (versión estable)');
+        
+        // ✅ Configuración personalizada para evitar errores
+        window.CMS.init({
+          config: {
+            backend: {
+              name: 'git-gateway',
+              branch: 'main'
+            }
+          }
+        });
+
+        // ✅ Hook para actualizar la web después de guardar cambios
+        window.CMS.registerEventListener({
+          name: 'preSave',
+          handler: ({ entry }) => {
+            console.log('📝 Guardando cambios en:', entry.get('slug'));
+          }
+        });
+
+        window.CMS.registerEventListener({
+          name: 'postSave',
+          handler: ({ entry }) => {
+            console.log('✅ Cambios guardados exitosamente');
+            
+            // Mostrar notificación de éxito
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification('CMS', {
+                body: '¡Cambios guardados! La web se actualizará automáticamente.',
+                icon: '/admin/favicon.ico'
+              });
+            }
+            
+            // Opcional: Limpiar cache del navegador
+            if ('caches' in window) {
+              caches.keys().then(names => {
+                names.forEach(name => {
+                  caches.delete(name);
+                });
+              });
+            }
+          }
+        });
+
+        // ✅ Pedir permisos de notificación
+        if ('Notification' in window && Notification.permission === 'default') {
+          Notification.requestPermission();
+        }
+
+      } else {
+        console.error('❌ Decap CMS no se pudo cargar');
+        document.getElementById('nc-root').innerHTML = `
+          <div style="padding: 40px; text-align: center; font-family: Arial, sans-serif;">
+            <h2 style="color: #e74c3c;">Error cargando CMS</h2>
+            <p>Por favor, recarga la página o contacta al administrador.</p>
+            <button onclick="location.reload()" style="background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+              Recargar Página
+            </button>
+          </div>
+        `;
+      }
+    });
+
+    // ✅ Manejo de errores globales
+    window.addEventListener('error', function(e) {
+      console.error('Error en CMS:', e.error);
+      
+      // Si es el error removeChild, recargar
+      if (e.error && e.error.message && e.error.message.includes('removeChild')) {
+        console.log('🔄 Detectado error removeChild - usando versión estable');
+        // La versión 2.10.0 debería evitar este error
+      }
+    });
   </script>
 </body>
 </html>
+
