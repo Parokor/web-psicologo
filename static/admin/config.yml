@@ -1,70 +1,106 @@
-# Decap CMS Configuration
+<script type="text/yaml">
+# Archivo: static/admin/config.yml
+
+# ✅ Backend configuración
 backend:
   name: git-gateway
   branch: main
+  squash_merges: true
 
-# Media files
-media_folder: static/img
-public_folder: /img
+# ✅ Media files
+media_folder: "static/images"
+public_folder: "/images"
 
-# Locale
+# ✅ Site info
+site_url: https://perfilpersonalizado.netlify.app
+display_url: https://perfilpersonalizado.netlify.app
+
+# ✅ Locale
 locale: 'es'
 
-# Collections
+# ✅ Collections
 collections:
-  # Contact Settings
+  # Configuración del Sitio
   - name: "settings"
-    label: "⚙️ Configuración"
+    label: "⚙️ Configuración del Sitio"
+    description: "Información personal y de contacto"
+    editor:
+      preview: false
     files:
       - name: "contact"
-        label: "Información de Contacto"
-        file: "content/settings/contact-info.json"
+        label: "📞 Información de Contacto"
+        file: "static/contact-info.json"
+        description: "Datos personales y de contacto del profesional"
         fields:
-          - {label: "Nombre Completo", name: "name", widget: "string"}
-          - {label: "Título Profesional", name: "title", widget: "string"}
-          - {label: "Teléfono", name: "phone", widget: "string"}
-          - {label: "Email", name: "email", widget: "string"}
-          - {label: "WhatsApp (solo números)", name: "whatsapp", widget: "string"}
-          - {label: "Dirección", name: "address", widget: "string"}
-          - {label: "Número de Colegiado", name: "collegeNumber", widget: "string"}
-          - label: "Redes Sociales"
+          - {label: "👤 Nombre Completo", name: "name", widget: "string", hint: "Ej: Dr. María García"}
+          - {label: "🎓 Título Profesional", name: "title", widget: "string", hint: "Ej: Psicóloga Sanitaria Colegiada"}
+          - {label: "📞 Teléfono", name: "phone", widget: "string", hint: "Ej: +34 612 345 678"}
+          - {label: "📧 Email", name: "email", widget: "string", hint: "Tu email profesional"}
+          - {label: "📱 WhatsApp", name: "whatsapp", widget: "string", hint: "Solo números: 34612345678"}
+          - {label: "📍 Dirección", name: "address", widget: "string", hint: "Ciudad o dirección completa"}
+          - {label: "🆔 Número de Colegiado", name: "collegeNumber", widget: "string", hint: "Ej: M-12345"}
+          
+          # Redes Sociales
+          - label: "🌐 Redes Sociales"
             name: "socialMedia"
             widget: "object"
+            collapsed: true
             fields:
-              - {label: "Instagram URL", name: "instagram", widget: "string"}
-              - {label: "LinkedIn URL", name: "linkedin", widget: "string"}
-              - {label: "YouTube URL", name: "youtube", widget: "string"}
-              - {label: "Facebook URL", name: "facebook", widget: "string"}
+              - {label: "📷 Instagram URL", name: "instagram", widget: "string", required: false, hint: "https://instagram.com/tuusuario"}
+              - {label: "💼 LinkedIn URL", name: "linkedin", widget: "string", required: false, hint: "https://linkedin.com/in/tuusuario"}
+              - {label: "🎥 YouTube URL", name: "youtube", widget: "string", required: false, hint: "https://youtube.com/@tucanal"}
+              - {label: "📘 Facebook URL", name: "facebook", widget: "string", required: false, hint: "https://facebook.com/tupagina"}
+
+          # Horarios
+          - label: "🕐 Horarios de Atención"
+            name: "schedule"
+            widget: "object"
+            collapsed: true
+            fields:
+              - {label: "Lunes a Viernes", name: "weekdays", widget: "string", default: "Lun-Vie: 9:00-20:00"}
+              - {label: "Sábados", name: "saturday", widget: "string", default: "Sáb: 10:00-14:00"}
+              - {label: "Domingos", name: "sunday", widget: "string", default: "Cerrado"}
 
   # Blog Posts
   - name: "blog"
-    label: "📝 Blog"
+    label: "📝 Artículos del Blog"
+    label_singular: "Artículo"
     folder: "content/blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: true
     fields:
-      - {label: "Título", name: "title", widget: "string"}
-      - {label: "Fecha", name: "date", widget: "datetime"}
-      - {label: "Descripción", name: "description", widget: "text"}
-      - {label: "Imagen destacada", name: "image", widget: "image", required: false}
-      - {label: "Categorías", name: "categories", widget: "list", default: ["General"]}
-      - {label: "Contenido", name: "body", widget: "markdown"}
+      - {label: "📰 Título", name: "title", widget: "string"}
+      - {label: "📅 Fecha", name: "date", widget: "datetime"}
+      - {label: "📝 Descripción Corta", name: "description", widget: "text", hint: "Resumen del artículo para SEO"}
+      - {label: "🖼️ Imagen Destacada", name: "image", widget: "image", required: false}
+      - {label: "🏷️ Categorías", name: "categories", widget: "list", default: ["General"], hint: "Ej: Ansiedad, Terapia de Pareja"}
+      - {label: "✅ Publicado", name: "published", widget: "boolean", default: true}
+      - {label: "📄 Contenido", name: "body", widget: "markdown"}
 
-  # Pages
+  # Páginas
   - name: "pages"
-    label: "📄 Páginas"
+    label: "📄 Páginas del Sitio"
+    description: "Páginas principales del sitio web"
+    editor:
+      preview: true
     files:
       - name: "about"
-        label: "Sobre Mí"
+        label: "👨‍⚕️ Sobre Mí"
         file: "content/pages/about.md"
         fields:
-          - {label: "Título", name: "title", widget: "string"}
-          - {label: "Imagen de perfil", name: "image", widget: "image", required: false}
-          - {label: "Contenido", name: "body", widget: "markdown"}
-      
-      - name: "services"
-        label: "Servicios"
-        file: "content/pages/services.md"
-        fields:
-          - {label: "Título", name: "title", widget: "string"}
-          - {label: "Contenido", name: "body", widget: "markdown"}
+          - {label: "📰 Título", name: "title", widget: "string", default: "Sobre Mí"}
+          - {label: "📸 Imagen de Perfil", name: "profileImage", widget: "image", required: false}
+          - {label: "📄 Contenido", name: "body", widget: "markdown", hint: "Tu historia profesional, formación, etc."}
+
+# ✅ Editor settings
+editor:
+  preview: true
+
+# ✅ Show preview links
+show_preview_links: true
+
+# ✅ Logo personalizado
+logo_url: https://perfilpersonalizado.netlify.app/images/logo.png
+</script>
