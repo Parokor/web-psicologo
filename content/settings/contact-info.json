@@ -1,20 +1,20 @@
 {
-  "name": "Dr. María García",
-  "title": "Psicóloga Sanitaria Colegiada",
-  "phone": "+34 612 345 678",
-  "email": "contacto@psicologamaria.com",
+  "collegeNumber": "BIO3540",
+  "name": "Berta Permuy Arechaga",
+  "phone": "683 703 423",
   "whatsapp": "34612345678",
-  "address": "Madrid, España",
-  "collegeNumber": "M-12345",
+  "address": "Getxo, España",
   "socialMedia": {
-    "instagram": "https://instagram.com/psicologamaria",
-    "linkedin": "https://linkedin.com/in/psicologamaria",
-    "youtube": "https://youtube.com/@psicologamaria",
-    "facebook": "https://facebook.com/psicologamaria"
+    "instagram": "https://www.instagram.com/psicologaberta/",
+    "linkedin": "https://www.linkedin.com/in/bertapermuyarechaga/",
+    "youtube": "www.youtuve.com",
+    "facebook": "https://www.facebook.com/psicologaberta/"
   },
   "schedule": {
     "weekdays": "Lun-Vie: 9:00-20:00",
     "saturday": "Sáb: 10:00-14:00",
     "sunday": "Cerrado"
-  }
+  },
+  "title": "Psicóloga Sanitaria Colegiada",
+  "email": "bertapermuy.psicologa@gmail.com"
 }
