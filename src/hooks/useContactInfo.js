@@ -1,175 +1,117 @@
-<script>
-// Archivo: src/hooks/useContactInfo.js
-
+// src/hooks/useContactInfo.js
 import { useState, useEffect, useCallback } from 'react'
+import { withPrefix } from 'gatsby'
+
+const isBrowser = typeof window !== 'undefined'
 
 export const useContactInfo = () => {
-  // ✅ Datos por defecto inmediatamente disponibles
-  const defaultContactInfo = {
-    name: "Dr. María García",
-    title: "Psicóloga Sanitaria Colegiada",
-    phone: "+34 612 345 678",
-    email: "contacto@psicologamaria.com",
-    whatsapp: "34612345678",
-    address: "Madrid, España",
-    collegeNumber: "M-12345",
-    socialMedia: {
-      instagram: "https://instagram.com/psicologamaria",
-      linkedin: "https://linkedin.com/in/psicologamaria",
-      youtube: "https://youtube.com/@psicologamaria",
-      facebook: "https://facebook.com/psicologamaria"
-    },
-    schedule: {
-      weekdays: "Lun-Vie: 9:00-20:00",
-      saturday: "Sáb: 10:00-14:00", 
-      sunday: "Cerrado"
-    }
-  }
+  const defaultContactInfo = { /* …tus datos por defecto… */ }
 
   const [contactInfo, setContactInfo] = useState(defaultContactInfo)
   const [lastUpdate, setLastUpdate] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // ✅ Función para cargar datos del CMS
   const loadContactInfo = useCallback(async (showLog = false) => {
     try {
-      if (showLog) console.log('🔄 Cargando información de contacto...');
-      
-      // ✅ Agregar timestamp para evitar cache
-      const timestamp = new Date().getTime();
-      const response = await fetch(`/contact-info.json?t=${timestamp}`, {
+      if (showLog) console.log('🔄 Cargando info de contacto…')
+
+      const url = withPrefix('/contact-info.json') + `?t=${Date.now()}`
+      const response = await fetch(url, {
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        }
-      });
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      })
 
       if (response.ok) {
-        const data = await response.json();
-        
-        // ✅ Verificar si los datos son válidos
-        if (data && data.name && data.email) {
-          setContactInfo(data);
-          setLastUpdate(new Date());
-          
-          if (showLog) {
-            console.log('✅ Información cargada desde CMS:', data);
-            console.log('📅 Última actualización:', new Date().toLocaleString());
+        const data = await response.json()
+        if (data?.name && data?.email) {
+          setContactInfo(data)
+          setLastUpdate(new Date())
+
+          if (showLog) console.log('✅ Cargado del CMS:', data)
+
+          if (isBrowser) {
+            localStorage.setItem('contactInfo', JSON.stringify(data))
+            localStorage.setItem('contactInfoTimestamp', Date.now().toString())
           }
-          
-          // ✅ Guardar en localStorage para persistencia
-          localStorage.setItem('contactInfo', JSON.stringify(data));
-          localStorage.setItem('contactInfoTimestamp', timestamp.toString());
-          
-          return true;
-        } else {
-          if (showLog) console.warn('⚠️ Datos del CMS incompletos, usando defaults');
-          return false;
+          return true
         }
-      } else {
-        if (showLog) console.log('📝 CMS no disponible, usando datos por defecto');
-        return false;
+        if (showLog) console.warn('⚠️ Datos incompletos; usando defaults')
+      } else if (showLog) {
+        console.log('📝 CMS no disponible; usando defaults')
       }
-    } catch (error) {
-      if (showLog) console.log('📝 Error cargando CMS, usando datos por defecto:', error);
-      
-      // ✅ Intentar cargar desde localStorage
-      try {
-        const cached = localStorage.getItem('contactInfo');
-        if (cached) {
-          const cachedData = JSON.parse(cached);
-          setContactInfo(cachedData);
-          if (showLog) console.log('💾 Cargado desde cache local');
-          return true;
+      return false
+    } catch (err) {
+      if (showLog) console.log('📝 Error CMS; usando defaults:', err)
+
+      if (isBrowser) {
+        try {
+          const cached = localStorage.getItem('contactInfo')
+          if (cached) {
+            setContactInfo(JSON.parse(cached))
+            if (showLog) console.log('💾 Cargado desde cache local')
+            return true
+          }
+        } catch (cacheErr) {
+          if (showLog) console.log('❌ Error cache local:', cacheErr)
         }
-      } catch (cacheError) {
-        if (showLog) console.log('❌ Error en cache local:', cacheError);
       }
-      
-      return false;
+      return false
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, []);
+  }, [])
 
-  // ✅ Cargar datos al montar el componente
+  // ----- Effects (sólo en browser) -----
   useEffect(() => {
-    loadContactInfo(true);
-  }, [loadContactInfo]);
+    loadContactInfo(true)
+  }, [loadContactInfo])
 
-  // ✅ Polling cada 30 segundos para cambios en el CMS
   useEffect(() => {
-    const interval = setInterval(() => {
-      loadContactInfo(false); // Sin logs para polling automático
-    }, 30000); // 30 segundos
+    if (!isBrowser) return
+    const id = setInterval(() => loadContactInfo(false), 30_000)
+    return () => clearInterval(id)
+  }, [loadContactInfo])
 
-    return () => clearInterval(interval);
-  }, [loadContactInfo]);
-
-  // ✅ Escuchar eventos del CMS (cuando esté en la misma pestaña)
   useEffect(() => {
-    const handleCMSUpdate = () => {
-      setTimeout(() => {
-        loadContactInfo(true);
-      }, 2000); // Esperar 2 segundos después del evento CMS
-    };
-
-    // Escuchar eventos personalizados
-    window.addEventListener('cms-update', handleCMSUpdate);
-    
-    // Escuchar cambios en localStorage (cuando otros tabs actualicen)
+    if (!isBrowser) return
+    const handleCMSUpdate = () => setTimeout(() => loadContactInfo(true), 2000)
+    window.addEventListener('cms-update', handleCMSUpdate)
     window.addEventListener('storage', (e) => {
       if (e.key === 'contactInfo') {
         try {
-          const newData = JSON.parse(e.newValue);
-          setContactInfo(newData);
-          console.log('🔄 Datos actualizados desde otra pestaña');
-        } catch (error) {
-          console.error('Error procesando actualización:', error);
+          setContactInfo(JSON.parse(e.newValue))
+          console.log('🔄 Datos actualizados desde otra pestaña')
+        } catch (err) {
+          console.error('Error procesando actualización:', err)
         }
       }
-    });
-
+    })
     return () => {
-      window.removeEventListener('cms-update', handleCMSUpdate);
-      window.removeEventListener('storage', handleCMSUpdate);
-    };
-  }, [loadContactInfo]);
+      window.removeEventListener('cms-update', handleCMSUpdate)
+      window.removeEventListener('storage', handleCMSUpdate)
+    }
+  }, [loadContactInfo])
 
-  // ✅ Función manual para forzar actualización
-  const refreshData = () => {
-    return loadContactInfo(true);
-  };
-
-  // ✅ Generar URLs de WhatsApp
-  const getWhatsAppURL = (message = "Hola, me gustaría obtener más información") => {
-    return `https://wa.me/${contactInfo.whatsapp}?text=${encodeURIComponent(message)}`;
-  };
-
-  const getBookingWhatsAppURL = () => {
-    return getWhatsAppURL("Hola, me gustaría reservar una primera consulta. ¿Cuál sería tu disponibilidad?");
-  };
-
-  const getInfoWhatsAppURL = () => {
-    return getWhatsAppURL("Hola, me gustaría obtener más información sobre tus servicios de psicología");
-  };
-
-  const getConsultationWhatsAppURL = () => {
-    return getWhatsAppURL("Hola, me gustaría agendar una consulta. ¿Podrías ayudarme?");
-  };
+  // ----- Helpers -----
+  const getWhatsAppURL = (msg = 'Hola, me gustaría obtener más información') =>
+    `https://wa.me/${contactInfo.whatsapp}?text=${encodeURIComponent(msg)}`
 
   return {
     contactInfo,
     isLoading,
     lastUpdate,
-    refreshData,
+    refreshData: () => loadContactInfo(true),
     getWhatsAppURL,
-    getBookingWhatsAppURL,
-    getInfoWhatsAppURL,
-    getConsultationWhatsAppURL
-  };
-};
+    getBookingWhatsAppURL: () =>
+      getWhatsAppURL('Hola, me gustaría reservar una primera consulta. ¿Cuál sería tu disponibilidad?'),
+    getInfoWhatsAppURL: () =>
+      getWhatsAppURL('Hola, me gustaría obtener más información sobre tus servicios de psicología'),
+    getConsultationWhatsAppURL: () =>
+      getWhatsAppURL('Hola, me gustaría agendar una consulta. ¿Podrías ayudarme?'),
+  }
+}
 
-export default useContactInfo;
-</script>
+export default useContactInfo
