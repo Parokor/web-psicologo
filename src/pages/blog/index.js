@@ -56,7 +56,7 @@ const BlogIndex = ({ data, location }) => {
                     </div>
                     
                     <h2 className="text-xl font-bold mb-3 text-gray-800">
-                      <Link to={post.fields.slug} className="hover:text-blue-600 transition-colors">
+                      <Link to={`/blog${post.fields.slug}`} className="hover:text-blue-600 transition-colors">
                         {title}
                       </Link>
                     </h2>
@@ -74,7 +74,7 @@ const BlogIndex = ({ data, location }) => {
                         })}
                       </time>
                       <Link 
-                        to={post.fields.slug}
+                        to={`/blog${post.fields.slug}`}
                         className="text-blue-600 hover:text-blue-800 font-medium"
                       >
                         Leer más →
