@@ -66,12 +66,12 @@ const BlogIndex = ({ data, location }) => {
                     </p>
                     
                     <div className="flex items-center justify-between text-sm text-gray-500">
-                      <time dateTime={post.frontmatter.date}>
-                        {new Date(post.frontmatter.date).toLocaleDateString('es-ES', {
+                      <time dateTime={post.frontmatter.date || ''}>
+                        {post.frontmatter.date ? new Date(post.frontmatter.date).toLocaleDateString('es-ES', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
-                        })}
+                        }) : 'Sin fecha'}
                       </time>
                       <Link 
                         to={`/blog${post.fields.slug}`}
