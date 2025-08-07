@@ -2,7 +2,7 @@
 const path = require("path");
 const { createFilePath } = require("gatsby-source-filesystem");
 
-/* 1)  Anular react-hot-toast y framer-motion en build-html */
+/* 1)  Anular react-hot-toast, framer-motion y react-icons en build-html */
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   if (stage === "build-html") {
     actions.setWebpackConfig({
@@ -11,12 +11,14 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
           { test: /react-hot-toast[\\/].*\.m?js$/, use: loaders.null() },
           { test: /react-hot-toast[\\/].*\.css$/, use: loaders.null() },
           { test: /framer-motion[\\/].*\.m?js$/, use: loaders.null() },
+          { test: /react-icons[\\/].*\.m?js$/, use: loaders.null() },
         ],
       },
       resolve: {
         alias: {
           "react-hot-toast": path.resolve(__dirname, "src/empty-module.js"),
           "framer-motion": path.resolve(__dirname, "src/empty-module.js"),
+          "react-icons": path.resolve(__dirname, "src/empty-module.js"),
         },
       },
     });
