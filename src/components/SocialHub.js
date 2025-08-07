@@ -6,12 +6,15 @@ import useContactInfo from '../hooks/useContactInfo'
 const SocialHub = () => {
   const { contactInfo, getWhatsAppURL } = useContactInfo()
 
+  // Proteger contra socialMedia undefined
+  const socialMedia = contactInfo.socialMedia || {}
+
   // Enlaces sociales funcionales con datos dinámicos
   const socialLinks = [
-    { name: 'Instagram', icon: FaInstagram, url: contactInfo.socialMedia.instagram, color: 'hover:text-pink-600' },
-    { name: 'LinkedIn', icon: FaLinkedin, url: contactInfo.socialMedia.linkedin, color: 'hover:text-blue-600' },
-    { name: 'YouTube', icon: FaYoutube, url: contactInfo.socialMedia.youtube, color: 'hover:text-red-600' },
-    { name: 'Facebook', icon: FaFacebook, url: contactInfo.socialMedia.facebook, color: 'hover:text-blue-700' },
+    { name: 'Instagram', icon: FaInstagram, url: socialMedia.instagram, color: 'hover:text-pink-600' },
+    { name: 'LinkedIn', icon: FaLinkedin, url: socialMedia.linkedin, color: 'hover:text-blue-600' },
+    { name: 'YouTube', icon: FaYoutube, url: socialMedia.youtube, color: 'hover:text-red-600' },
+    { name: 'Facebook', icon: FaFacebook, url: socialMedia.facebook, color: 'hover:text-blue-700' },
     { name: 'WhatsApp', icon: FaWhatsapp, url: getWhatsAppURL("Hola, me gustaría contactar contigo"), color: 'hover:text-green-600' },
   ]
 
@@ -28,7 +31,7 @@ const SocialHub = () => {
         </div>
         
         <div className="flex flex-wrap justify-center gap-8 mb-12">
-          {socialLinks.map((social) => (
+          {socialLinks.filter(social => social.url).map((social) => (
             <a
               key={social.name}
               href={social.url}
@@ -52,7 +55,7 @@ const SocialHub = () => {
             Envíame un mensaje y te responderé en menos de 24 horas
           </p>
           <a
-            href={`mailto:${contactInfo.email}`}
+            href={`mailto:${contactInfo.email || ''}`}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             Enviar Email
