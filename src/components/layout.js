@@ -28,14 +28,20 @@ const Layout = ({ location, title, children }) => {
     }
 
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      if (typeof window !== 'undefined') {
+        setIsScrolled(window.scrollY > 50)
+      }
     }
 
     // Verificar scroll inicial
     handleScroll()
 
     window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }
   }, [])
 
   const toggleMenu = () => {
