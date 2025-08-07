@@ -1,35 +1,39 @@
 // gatsby-node.js
-// ───────────────────────────────────────────────────────────
 const path = require("path");
 const { createFilePath } = require("gatsby-source-filesystem");
 
 /*-----------------------------------------------------------
-  1)  Ajuste de Webpack en fase SSR (build-html)
+  1)  Anular react-hot-toast COMPLETO en build-html
 -----------------------------------------------------------*/
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   if (stage === "build-html") {
     actions.setWebpackConfig({
-      resolve: {
-        alias: {
-          // Cualquier import de "react-hot-toast" → stub vacío
-          "react-hot-toast": path.resolve(__dirname, "src/empty-module.js"),
-        },
-      },
       module: {
         rules: [
+          // ①  Todos los .js / .mjs dentro de react-hot-toast  -> módulo vacío
           {
-            // Ignora el CSS que importa react-hot-toast
-            test: /react-hot-toast\/.*\.css$/,
+            test: /node_modules[/\```react-hot-toast[/\```.*\.m?js$/,
+            use: loaders.null(),
+          },
+          // ②  Cualquier css que exponga react-hot-toast        -> módulo vacío
+          {
+            test: /node_modules[/\```react-hot-toast[/\```.*\.css$/,
             use: loaders.null(),
           },
         ],
+      },
+      // ③  Alias de seguridad: si se pide exactamente "react-hot-toast"
+      resolve: {
+        alias: {
+          "react-hot-toast": path.resolve(__dirname, "src/empty-module.js"),
+        },
       },
     });
   }
 };
 
 /*-----------------------------------------------------------
-  2)  createPages  (blog posts + páginas estáticas)
+  2)  createPages   (tal cual lo tenías)
 -----------------------------------------------------------*/
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
@@ -57,7 +61,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const posts = result.data.allMarkdownRemark.nodes;
 
-  /* ---- Blog posts ---- */
+  /* blog posts */
   const blogPosts = posts.filter(p =>
     p.internal.contentFilePath?.includes("/content/blog/posts/")
   );
@@ -73,7 +77,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     });
   });
 
-  /* ---- Páginas estáticas ---- */
+  /* static pages */
   const staticPages = posts.filter(p =>
     p.internal.contentFilePath?.includes("/content/pages/")
   );
@@ -89,7 +93,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 };
 
 /*-----------------------------------------------------------
-  3)  onCreateNode  (genera campo slug para Markdown)
+  3)  onCreateNode  (slug para Markdown)
 -----------------------------------------------------------*/
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
@@ -101,7 +105,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 };
 
 /*-----------------------------------------------------------
-  4)  createSchemaCustomization  (tipado explícito)
+  4)  createSchemaCustomization
 -----------------------------------------------------------*/
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
@@ -113,15 +117,8 @@ exports.createSchemaCustomization = ({ actions }) => {
       social: Social
     }
 
-    type Author {
-      name: String
-      summary: String
-    }
-
-    type Social {
-      twitter: String
-      instagram: String
-    }
+    type Author { name: String, summary: String }
+    type Social { twitter: String, instagram: String }
 
     type MarkdownRemark implements Node {
       frontmatter: Frontmatter
@@ -135,8 +132,6 @@ exports.createSchemaCustomization = ({ actions }) => {
       slug: String
     }
 
-    type Fields {
-      slug: String
-    }
+    type Fields { slug: String }
   `);
 };
