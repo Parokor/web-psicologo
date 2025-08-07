@@ -1,15 +1,31 @@
 import React from 'react'
-import { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaWhatsapp } from 'react-icons/fa'
-import { FiMail } from 'react-icons/fi'
 import useContactInfo from '../hooks/useContactInfo'
 
+// Solo importar react-icons en el cliente
 const SocialHub = () => {
   const { contactInfo, getWhatsAppURL } = useContactInfo()
+  
+  // No renderizar nada en SSR
+  if (typeof window === 'undefined') {
+    return <div>Cargando redes sociales...</div>
+  }
 
-  // Proteger contra socialMedia undefined
+  // Importación dinámica para evitar SSR
+  const [icons, setIcons] = React.useState(null)
+  
+  React.useEffect(() => {
+    import('react-icons/fa').then(fa => 
+      import('react-icons/fi').then(fi => {
+        setIcons({ ...fa, ...fi })
+      })
+    )
+  }, [])
+
+  if (!icons) return <div>Cargando...</div>
+
+  const { FaInstagram, FaLinkedin, FaYoutube, FaFacebook, FaWhatsapp, FiMail } = icons
   const socialMedia = contactInfo.socialMedia || {}
 
-  // Enlaces sociales funcionales con datos dinámicos
   const socialLinks = [
     { name: 'Instagram', icon: FaInstagram, url: socialMedia.instagram, color: 'hover:text-pink-600' },
     { name: 'LinkedIn', icon: FaLinkedin, url: socialMedia.linkedin, color: 'hover:text-blue-600' },
@@ -19,7 +35,7 @@ const SocialHub = () => {
   ]
 
   return (
-    <section className="py-20 bg-gradient-to-b from-primary-50/50 to-white" data-aos="fade-up">
+    <section className="py-20 bg-gradient-to-b from-primary-50/50 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -37,8 +53,7 @@ const SocialHub = () => {
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`group flex flex-col items-center gap-2 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105`}
-              aria-label={social.name}
+              className="group flex flex-col items-center gap-2 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               <social.icon className={`text-5xl text-gray-600 transition-colors duration-300 ${social.color}`} />
               <span className="text-sm font-medium text-gray-700">{social.name}</span>
@@ -48,12 +63,8 @@ const SocialHub = () => {
         
         <div className="text-center bg-white rounded-2xl shadow-xl p-8 max-w-2xl mx-auto">
           <FiMail className="text-5xl text-primary-600 mx-auto mb-4" />
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            ¿Prefieres el email?
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Envíame un mensaje y te responderé en menos de 24 horas
-          </p>
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">¿Prefieres el email?</h3>
+          <p className="text-gray-600 mb-6">Envíame un mensaje y te responderé en menos de 24 horas</p>
           <a
             href={`mailto:${contactInfo.email || ''}`}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
