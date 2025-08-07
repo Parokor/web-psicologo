@@ -1,4 +1,4 @@
-// gatsby-node.js  (versión sin backticks ni grupos)
+// gatsby-node.js
 const path = require("path");
 const { createFilePath } = require("gatsby-source-filesystem");
 
@@ -21,7 +21,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   }
 };
 
-/* 2)  createPages (sin cambios) */
+/* 2)  createPages */
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
   const blogPostTemplate   = path.resolve("./src/templates/blog-post.js");
@@ -47,30 +47,38 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   const posts = result.data.allMarkdownRemark.nodes;
 
+  /* Blog posts */
   const blogPosts = posts.filter(p =>
     p.internal.contentFilePath?.includes("/content/blog/posts/")
   );
+  
   blogPosts.forEach((post, i) => {
     createPage({
       path: `/blog${post.fields.slug}`,
-      component: `${blogPostTemplate}?__contentFilePath=${post.internal.contentFilePath}`,
+      component: blogPostTemplate,
       context: {
         id: post.id,
         previousPostId: i === 0 ? null : blogPosts[i - 1].id,
-        nextPostId:     i === blogPosts.length - 1 ? null : blogPosts[i + 1].id,
+        nextPostId: i === blogPosts.length - 1 ? null : blogPosts[i + 1].id,
+        contentFilePath: post.internal.contentFilePath,
       },
     });
   });
 
+  /* Static pages */
   const staticPages = posts.filter(p =>
     p.internal.contentFilePath?.includes("/content/pages/")
   );
+  
   staticPages.forEach(page => {
     const slug = page.frontmatter.slug || page.fields.slug;
     createPage({
       path: `/${slug}`,
-      component: `${staticPageTemplate}?__contentFilePath=${page.internal.contentFilePath}`,
-      context: { id: page.id },
+      component: staticPageTemplate,
+      context: { 
+        id: page.id,
+        contentFilePath: page.internal.contentFilePath,
+      },
     });
   });
 };
@@ -87,14 +95,31 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 /* 4)  Schema types */
 exports.createSchemaCustomization = ({ actions }) => {
   actions.createTypes(`
-    type SiteSiteMetadata { author: Author, siteUrl: String, social: Social }
-    type Author { name: String, summary: String }
-    type Social { twitter: String, instagram: String }
+    type SiteSiteMetadata { 
+      author: Author
+      siteUrl: String
+      social: Social 
+    }
+    type Author { 
+      name: String
+      summary: String 
+    }
+    type Social { 
+      twitter: String
+      instagram: String 
+    }
     type MarkdownRemark implements Node {
       frontmatter: Frontmatter
       fields: Fields
     }
-    type Frontmatter { title: String, description: String, date: Date @dateformat, slug: String }
-    type Fields { slug: String }
+    type Frontmatter { 
+      title: String
+      description: String
+      date: Date @dateformat
+      slug: String 
+    }
+    type Fields { 
+      slug: String 
+    }
   `);
 };
