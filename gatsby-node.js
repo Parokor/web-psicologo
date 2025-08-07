@@ -1,105 +1,111 @@
-const path = require(`path`)
-const { createFilePath } = require(`gatsby-source-filesystem`)
+// gatsby-node.js
+// ───────────────────────────────────────────────────────────
+const path = require("path");
+const { createFilePath } = require("gatsby-source-filesystem");
 
-// Create pages from Markdown files
+/*-----------------------------------------------------------
+  1)  Ajuste de Webpack en fase SSR (build-html)
+-----------------------------------------------------------*/
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    actions.setWebpackConfig({
+      resolve: {
+        alias: {
+          // Cualquier import de "react-hot-toast" → stub vacío
+          "react-hot-toast": path.resolve(__dirname, "src/empty-module.js"),
+        },
+      },
+      module: {
+        rules: [
+          {
+            // Ignora el CSS que importa react-hot-toast
+            test: /react-hot-toast\/.*\.css$/,
+            use: loaders.null(),
+          },
+        ],
+      },
+    });
+  }
+};
+
+/*-----------------------------------------------------------
+  2)  createPages  (blog posts + páginas estáticas)
+-----------------------------------------------------------*/
 exports.createPages = async ({ graphql, actions, reporter }) => {
-  const { createPage } = actions
+  const { createPage } = actions;
 
-  // Define templates
-  const blogPost = path.resolve(`./src/templates/blog-post.js`)
-  const staticPage = path.resolve(`./src/templates/static-page.js`)
+  const blogPostTemplate   = path.resolve("./src/templates/blog-post.js");
+  const staticPageTemplate = path.resolve("./src/templates/static-page.js");
 
-  // Get all markdown remark files sorted by date
   const result = await graphql(`
     {
       allMarkdownRemark(sort: { frontmatter: { date: ASC } }) {
         nodes {
           id
-          fields {
-            slug
-          }
-          frontmatter {
-            title
-            slug
-          }
-          internal {
-            contentFilePath
-          }
+          fields { slug }
+          frontmatter { title slug }
+          internal { contentFilePath }
         }
       }
     }
-  `)
+  `);
 
   if (result.errors) {
-    reporter.panicOnBuild(
-      `There was an error loading your blog posts`,
-      result.errors
-    )
-    return
+    reporter.panicOnBuild(`There was an error loading your Markdown files`, result.errors);
+    return;
   }
 
-  const posts = result.data.allMarkdownRemark.nodes
+  const posts = result.data.allMarkdownRemark.nodes;
 
-  // Create blog posts pages
-  const blogPosts = posts.filter(post =>
-    post.internal.contentFilePath && post.internal.contentFilePath.includes('/content/blog/posts/')
-  )
+  /* ---- Blog posts ---- */
+  const blogPosts = posts.filter(p =>
+    p.internal.contentFilePath?.includes("/content/blog/posts/")
+  );
 
-  if (blogPosts.length > 0) {
-    blogPosts.forEach((post, index) => {
-      const previousPostId = index === 0 ? null : blogPosts[index - 1].id
-      const nextPostId = index === blogPosts.length - 1 ? null : blogPosts[index + 1].id
+  blogPosts.forEach((post, index) => {
+    const previousPostId = index === 0 ? null : blogPosts[index - 1].id;
+    const nextPostId     = index === blogPosts.length - 1 ? null : blogPosts[index + 1].id;
 
-      createPage({
-        path: `/blog${post.fields.slug}`,
-        component: `${blogPost}?__contentFilePath=${post.internal.contentFilePath}`,
-        context: {
-          id: post.id,
-          previousPostId,
-          nextPostId,
-        },
-      })
-    })
-  }
+    createPage({
+      path: `/blog${post.fields.slug}`,
+      component: `${blogPostTemplate}?__contentFilePath=${post.internal.contentFilePath}`,
+      context: { id: post.id, previousPostId, nextPostId },
+    });
+  });
 
-  // Create static pages
-  const staticPages = posts.filter(post =>
-    post.internal.contentFilePath && post.internal.contentFilePath.includes('/content/pages/')
-  )
+  /* ---- Páginas estáticas ---- */
+  const staticPages = posts.filter(p =>
+    p.internal.contentFilePath?.includes("/content/pages/")
+  );
 
   staticPages.forEach(page => {
-    const slug = page.frontmatter.slug || page.fields.slug
+    const slug = page.frontmatter.slug || page.fields.slug;
     createPage({
       path: `/${slug}`,
-      component: `${staticPage}?__contentFilePath=${page.internal.contentFilePath}`,
-      context: {
-        id: page.id,
-      },
-    })
-  })
-}
+      component: `${staticPageTemplate}?__contentFilePath=${page.internal.contentFilePath}`,
+      context: { id: page.id },
+    });
+  });
+};
 
-// Create slug fields for markdown files
+/*-----------------------------------------------------------
+  3)  onCreateNode  (genera campo slug para Markdown)
+-----------------------------------------------------------*/
 exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
+  const { createNodeField } = actions;
 
-  if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
-
-    createNodeField({
-      name: `slug`,
-      node,
-      value,
-    })
+  if (node.internal.type === "MarkdownRemark") {
+    const value = createFilePath({ node, getNode });
+    createNodeField({ name: "slug", node, value });
   }
-}
+};
 
-// Create schema customizations
+/*-----------------------------------------------------------
+  4)  createSchemaCustomization  (tipado explícito)
+-----------------------------------------------------------*/
 exports.createSchemaCustomization = ({ actions }) => {
-  const { createTypes } = actions
+  const { createTypes } = actions;
 
-  // Explicitly define the siteMetadata {} object
-  // This way those will always be defined even if removed from gatsby-config.js
   createTypes(`
     type SiteSiteMetadata {
       author: Author
@@ -132,5 +138,5 @@ exports.createSchemaCustomization = ({ actions }) => {
     type Fields {
       slug: String
     }
-  `)
-}
+  `);
+};
