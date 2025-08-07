@@ -1,25 +1,13 @@
-
-// src/empty-module.js
+// src/empty-icons.js
 import React from 'react'
 
-// Para react-hot-toast
-export const toast = () => {}
-export const Toaster = () => null
+const EmptyIcon = () => React.createElement('span')
 
-// Para framer-motion
-export const motion = {}
-export const AnimatePresence = ({ children }) => children
+export const FaInstagram = EmptyIcon
+export const FaLinkedin = EmptyIcon
+export const FaYoutube = EmptyIcon
+export const FaFacebook = EmptyIcon
+export const FaWhatsapp = EmptyIcon
+export const FiMail = EmptyIcon
 
-// Para react-icons
-export const GenIcon = () => React.createElement('span')
-export const IconBase = () => React.createElement('span')
-
-// Exports por defecto
-export default { 
-  toast, 
-  Toaster, 
-  motion, 
-  AnimatePresence,
-  GenIcon,
-  IconBase
-}
+export default EmptyIcon
