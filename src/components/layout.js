@@ -23,7 +23,9 @@ const Layout = ({ location, title, children }) => {
   // Detectar scroll para cambiar estilo de la navegación
   useEffect(() => {
     // Solo ejecutar en el navegador
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+      return // Salir sin hacer nada si no hay window
+    }
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
