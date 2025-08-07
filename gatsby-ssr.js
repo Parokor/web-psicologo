@@ -1,14 +1,8 @@
-/**
- * Gatsby SSR APIs
- * Docs: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/
- */
-
+/* gatsby-ssr.js */
 const React = require("react")
 
 exports.onRenderBody = ({ setHtmlAttributes, setHeadComponents }) => {
-  setHtmlAttributes({ lang: `es` })
-
-  // Netlify Identity widget
+  setHtmlAttributes({ lang: "es" })
   setHeadComponents([
     <script
       key="netlify-identity-widget"
@@ -17,20 +11,22 @@ exports.onRenderBody = ({ setHtmlAttributes, setHeadComponents }) => {
   ])
 }
 
-/**
- * Evitar que react-hot-toast se ejecute en el lado del servidor.
- * Gatsby llama esta API SOLAMENTE en build-html.
- */
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   if (stage === "build-html") {
     actions.setWebpackConfig({
       module: {
         rules: [
-          {
-            test: /react-hot-toast/,
-            use: loaders.null(), // lo reemplaza por un módulo vacío
-          },
+          // Ignora **cualquier** JS del paquete
+          { test: /react-hot-toast\/.*\.m?js$/, use: loaders.null() },
+          // Ignora el CSS que importa el paquete
+          { test: /react-hot-toast\/.*\.css$/,  use: loaders.null() },
         ],
+      },
+      // Otra forma de asegurarlo vía alias: apuntamos a un módulo vacío
+      resolve: {
+        alias: {
+          "react-hot-toast": require.resolve("./src/empty-module.js"),
+        },
       },
     })
   }
