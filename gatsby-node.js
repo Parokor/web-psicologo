@@ -2,33 +2,23 @@
 const path = require("path");
 const { createFilePath } = require("gatsby-source-filesystem");
 
-/* 1)  Anular react-hot-toast, framer-motion y react-icons específicos en build-html */
+/* 1) Solo stubear react-hot-toast que es el único realmente problemático */
 exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
   if (stage === "build-html") {
     actions.setWebpackConfig({
       module: {
         rules: [
-          { test: /react-hot-toast[\\/].*\.m?js$/, use: loaders.null() },
-          { test: /react-hot-toast[\\/].*\.css$/, use: loaders.null() },
-          { test: /framer-motion[\\/].*\.m?js$/, use: loaders.null() },
+          { test: /react-hot-toast/, use: loaders.null() },
         ],
-      },
-      resolve: {
-        alias: {
-          "react-hot-toast": path.resolve(__dirname, "src/empty-module.js"),
-          "framer-motion": path.resolve(__dirname, "src/empty-module.js"),
-          "react-icons/fa": path.resolve(__dirname, "src/empty-icons.js"),
-          "react-icons/fi": path.resolve(__dirname, "src/empty-icons.js"),
-        },
       },
     });
   }
 };
 
-/* 2)  createPages */
+/* 2) createPages */
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
-  const blogPostTemplate   = path.resolve("./src/templates/blog-post.js");
+  const blogPostTemplate = path.resolve("./src/templates/blog-post.js");
   const staticPageTemplate = path.resolve("./src/templates/static-page.js");
 
   const result = await graphql(`
@@ -45,7 +35,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   `);
 
   if (result.errors) {
-    reporter.panicOnBuild(`There was an error loading Markdown files`, result.errors);
+    reporter.panicOnBuild(`Error loading Markdown files`, result.errors);
     return;
   }
 
@@ -64,7 +54,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         id: post.id,
         previousPostId: i === 0 ? null : blogPosts[i - 1].id,
         nextPostId: i === blogPosts.length - 1 ? null : blogPosts[i + 1].id,
-        contentFilePath: post.internal.contentFilePath,
       },
     });
   });
@@ -79,15 +68,12 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     createPage({
       path: `/${slug}`,
       component: staticPageTemplate,
-      context: { 
-        id: page.id,
-        contentFilePath: page.internal.contentFilePath,
-      },
+      context: { id: page.id },
     });
   });
 };
 
-/* 3)  onCreateNode (slug) */
+/* 3) onCreateNode */
 exports.onCreateNode = ({ node, actions, getNode }) => {
   if (node.internal.type === "MarkdownRemark") {
     const { createNodeField } = actions;
@@ -96,7 +82,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-/* 4)  Schema types */
+/* 4) Schema types */
 exports.createSchemaCustomization = ({ actions }) => {
   actions.createTypes(`
     type SiteSiteMetadata { 
@@ -104,14 +90,8 @@ exports.createSchemaCustomization = ({ actions }) => {
       siteUrl: String
       social: Social 
     }
-    type Author { 
-      name: String
-      summary: String 
-    }
-    type Social { 
-      twitter: String
-      instagram: String 
-    }
+    type Author { name: String, summary: String }
+    type Social { twitter: String, instagram: String }
     type MarkdownRemark implements Node {
       frontmatter: Frontmatter
       fields: Fields
@@ -122,8 +102,6 @@ exports.createSchemaCustomization = ({ actions }) => {
       date: Date @dateformat
       slug: String 
     }
-    type Fields { 
-      slug: String 
-    }
+    type Fields { slug: String }
   `);
 };
